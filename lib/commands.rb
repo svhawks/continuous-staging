@@ -10,6 +10,7 @@ class Commands
   def update
     cd_into_target
     system %{git pull origin #{branch}}
+    touch_restart
   end
 
   def cd_into_target
@@ -37,6 +38,10 @@ class Commands
 
   def target_db_config
     "#{pwd}/config/database.yml"
+  end
+
+  def touch_restart
+    system %{touch tmp/restart.txt}
   end
 end
 

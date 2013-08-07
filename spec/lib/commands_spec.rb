@@ -32,7 +32,15 @@ describe Commands do
     it "pulls from the branch" do
       expected_cmd = 'git pull origin features/awesome-feature'
       Commands.any_instance.should_receive(:cd_into_target)
+      Commands.any_instance.stub(:touch_restart)
       Commands.any_instance.should_receive(:system).with(expected_cmd)
+      Commands.fire(run: :update, in: 'some_path', branch: 'features/awesome-feature')
+    end
+
+    it "restarts the server" do
+      Commands.any_instance.stub(:cd_into_target)
+      Commands.any_instance.stub(:system)
+      Commands.any_instance.should_receive(:touch_restart)
       Commands.fire(run: :update, in: 'some_path', branch: 'features/awesome-feature')
     end
   end
