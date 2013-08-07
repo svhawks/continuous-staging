@@ -7,7 +7,11 @@ class Broker
   STAGING_ROOT = '/var/www/vhosts/movielala/staging/'
 
   def branch
-    parsed_payload['commits'][0]['branch'].to_s.gsub('features/','')
+    parsed_payload['commits'][0]['branch']
+  end
+
+  def folder
+    branch.to_s.gsub('features/','').gsub('-', '_')
   end
   
   def deploy_exists?
@@ -15,14 +19,14 @@ class Broker
   end
 
   def deploy_path
-    STAGING_ROOT + branch.gsub('-', '_')
+    STAGING_ROOT + folder
   end
 
   def deploy
     if deploy_exists?
       Commands.fire(run: :update, in: deploy_path)
     else
-      Commands.fire(run: :create, in: deploy_path)
+      Commands.fire(run: :create, in: deploy_path, branch: branch)
     end
   end
 

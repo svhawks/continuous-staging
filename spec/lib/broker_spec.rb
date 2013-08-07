@@ -12,7 +12,8 @@ describe Broker do
 
   context "branch" do
     subject{ Broker.with_payload(payload)}
-    its(:branch){ should == 'awesome-feature' }
+    its(:branch){ should == 'features/awesome-feature' }
+    its(:folder){ should == 'awesome_feature' }
     its(:deploy_exists?){ should be_false }
     its(:deploy_path){ should == '/var/www/vhosts/movielala/staging/awesome_feature' }
   end
@@ -38,7 +39,7 @@ describe Broker do
       end
 
       it "creates repo in the branch folder" do
-        Commands.should_receive(:fire).with(run: :create, in: 'some_path')
+        Commands.should_receive(:fire).with(run: :create, in: 'some_path', branch: 'features/awesome-feature')
         broker.deploy
       end
     end
