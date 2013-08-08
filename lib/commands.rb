@@ -3,13 +3,15 @@ class Commands
 
   def create
     cd_into_target
-    system %{git clone git@bitbucket.org:movielalainc/web.git --branch #{branch} --single-branch #{pwd}}
+    clone
+    update_submodule
     link_db_config
   end
 
   def update
     cd_into_target
-    system %{git pull origin #{branch}}
+    pull
+    update_submodule
     touch_restart
   end
 
@@ -22,12 +24,24 @@ class Commands
     system %{ln -nfs #{shared_db_config} #{target_db_config}}
   end
 
+  def pull
+    system %{git pull origin #{branch}}
+  end
+
   def self.fire(options)
     command = new
     command.pwd = options[:in]
     command.branch = options[:branch] if options[:branch]
     command.send(options[:run])
     command
+  end
+
+  def clone
+    system %{git clone git@bitbucket.org:movielalainc/web.git --branch #{branch} --single-branch #{pwd}}
+  end
+
+  def update_submodule
+    system %{git submodule init && git submodule update}
   end
 
   private
