@@ -1,5 +1,4 @@
 require 'json'
-require 'commands'
 
 class Broker
   attr_accessor :payload 
@@ -34,6 +33,12 @@ class Broker
     broker = new
     broker.payload = payload
     broker
+  end
+
+  def self.deploy payload
+    broker = new
+    broker.payload = payload
+    broker.deploy
   end
 
   private
