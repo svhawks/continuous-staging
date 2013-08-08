@@ -3,7 +3,7 @@ require 'json'
 class Broker
   attr_accessor :payload 
 
-  STAGING_ROOT = '/var/www/vhosts/movielala/staging/'
+  STAGING_ROOT = '/var/www/vhosts/movielala.com/staging/'
 
   def branch
     parsed_payload['commits'][0]['branch']

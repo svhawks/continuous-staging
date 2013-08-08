@@ -15,7 +15,7 @@ describe Broker do
     its(:branch){ should == 'features/awesome-feature' }
     its(:folder){ should == 'awesome_feature' }
     its(:deploy_exists?){ should be_false }
-    its(:deploy_path){ should == '/var/www/vhosts/movielala/staging/awesome_feature' }
+    its(:deploy_path){ should == '/var/www/vhosts/movielala.com/staging/awesome_feature' }
   end
 
   context "deploy" do
