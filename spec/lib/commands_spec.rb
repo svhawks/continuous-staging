@@ -20,6 +20,7 @@ describe Commands do
       Commands.any_instance.stub(:link_db_config)
       Commands.any_instance.stub(:clone)
       Commands.any_instance.stub(:update_submodule)
+      Commands.any_instance.stub(:bundle)
       Commands.any_instance.should_receive(:cd_into_target)
     end
 
@@ -27,6 +28,7 @@ describe Commands do
       Commands.any_instance.stub(:cd_into_target)
       Commands.any_instance.stub(:link_db_config)
       Commands.any_instance.stub(:update_submodule)
+      Commands.any_instance.stub(:bundle)
       Commands.any_instance.should_receive(:clone)
     end
 
@@ -34,6 +36,7 @@ describe Commands do
       Commands.any_instance.stub(:cd_into_target)
       Commands.any_instance.stub(:link_db_config)
       Commands.any_instance.stub(:clone)
+      Commands.any_instance.stub(:bundle)
       Commands.any_instance.should_receive(:update_submodule)
     end
 
@@ -41,7 +44,16 @@ describe Commands do
       Commands.any_instance.stub(:cd_into_target)
       Commands.any_instance.stub(:clone)
       Commands.any_instance.stub(:update_submodule)
+      Commands.any_instance.stub(:bundle)
       Commands.any_instance.should_receive(:link_db_config)
+     end
+
+     it "updates bundle" do
+      Commands.any_instance.stub(:cd_into_target)
+      Commands.any_instance.stub(:clone)
+      Commands.any_instance.stub(:update_submodule)
+      Commands.any_instance.stub(:link_db_config)
+      Commands.any_instance.should_receive(:bundle)
      end
   end
 
@@ -54,6 +66,7 @@ describe Commands do
       Commands.any_instance.stub(:touch_restart)
       Commands.any_instance.stub(:pull)
       Commands.any_instance.stub(:update_submodule)
+      Commands.any_instance.stub(:bundle)
       Commands.any_instance.should_receive(:cd_into_target)
     end
 
@@ -61,6 +74,7 @@ describe Commands do
       Commands.any_instance.stub(:cd_into_target)
       Commands.any_instance.stub(:touch_restart)
       Commands.any_instance.stub(:update_submodule)
+      Commands.any_instance.stub(:bundle)
       Commands.any_instance.should_receive(:pull)
     end
 
@@ -68,6 +82,7 @@ describe Commands do
       Commands.any_instance.stub(:cd_into_target)
       Commands.any_instance.stub(:pull)
       Commands.any_instance.stub(:update_submodule)
+      Commands.any_instance.stub(:bundle)
       Commands.any_instance.should_receive(:touch_restart)
     end
 
@@ -75,7 +90,16 @@ describe Commands do
       Commands.any_instance.stub(:cd_into_target)
       Commands.any_instance.stub(:pull)
       Commands.any_instance.stub(:touch_restart)
+      Commands.any_instance.stub(:bundle)
       Commands.any_instance.should_receive(:update_submodule)
+    end
+
+    it "updates bundle" do
+      Commands.any_instance.stub(:cd_into_target)
+      Commands.any_instance.stub(:pull)
+      Commands.any_instance.stub(:touch_restart)
+      Commands.any_instance.stub(:update_submodule)
+      Commands.any_instance.should_receive(:bundle)
     end
   end
 
@@ -121,6 +145,13 @@ describe Commands do
         subject.should_receive(:system).once.with('mkdir -p some_path').ordered
         subject.should_receive(:system).once.with('cd some_path').ordered
         subject.cd_into_target
+      end
+    end
+
+    context "bundle" do
+      it "runs command to bundle" do
+        subject.should_receive(:system).once.with('bundle --deployment --without test development')
+        subject.bundle
       end
     end
   end

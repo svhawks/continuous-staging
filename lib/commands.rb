@@ -5,6 +5,7 @@ class Commands
     cd_into_target
     clone
     update_submodule
+    bundle
     link_db_config
   end
 
@@ -12,6 +13,7 @@ class Commands
     cd_into_target
     pull
     update_submodule
+    bundle
     touch_restart
   end
 
@@ -26,6 +28,10 @@ class Commands
 
   def pull
     system %{git pull origin #{branch}}
+  end
+
+  def bundle
+    system %{bundle --deployment --without test development}
   end
 
   def self.fire(options)
