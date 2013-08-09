@@ -18,7 +18,7 @@ class Broker
   end
 
   def allow_deploy?
-    branch.include?('feature')
+    branch && branch.include?('feature')
   end
 
   def deploy_path
