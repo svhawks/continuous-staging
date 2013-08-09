@@ -6,7 +6,7 @@ class Commands
   attr_accessor :pwd, :branch
 
   def create
-    cd_into_target
+    ensure_working_directory
     clone
     update_submodule
     bundle
@@ -14,16 +14,15 @@ class Commands
   end
 
   def update
-    cd_into_target
+    ensure_working_directory
     pull
     update_submodule
     bundle
     touch_restart
   end
 
-  def cd_into_target
-    run %{mkdir -p #{pwd}}
-    run %{cd #{pwd}}
+  def ensure_working_directory
+    FileUtils.mkdir_p pwd
   end
 
   def link_db_config
@@ -78,7 +77,7 @@ class Commands
 
   def run command
     logger.info "Running #{command}"
-    Open4::popen4(command) do |pid, stdin, stdout, stderr|
+    Open4::popen4(command, chdir: pwd) do |pid, stdin, stdout, stderr|
       logger.info stdout.read.strip
       logger.info stderr.read.strip
     end

@@ -21,11 +21,11 @@ describe Commands do
       Commands.any_instance.stub(:clone)
       Commands.any_instance.stub(:update_submodule)
       Commands.any_instance.stub(:bundle)
-      Commands.any_instance.should_receive(:cd_into_target)
+      Commands.any_instance.should_receive(:ensure_working_directory)
     end
 
     it "clones repository" do
-      Commands.any_instance.stub(:cd_into_target)
+      Commands.any_instance.stub(:ensure_working_directory)
       Commands.any_instance.stub(:link_db_config)
       Commands.any_instance.stub(:update_submodule)
       Commands.any_instance.stub(:bundle)
@@ -33,7 +33,7 @@ describe Commands do
     end
 
     it "updates submodules" do
-      Commands.any_instance.stub(:cd_into_target)
+      Commands.any_instance.stub(:ensure_working_directory)
       Commands.any_instance.stub(:link_db_config)
       Commands.any_instance.stub(:clone)
       Commands.any_instance.stub(:bundle)
@@ -41,7 +41,7 @@ describe Commands do
     end
 
      it "links the db config" do
-      Commands.any_instance.stub(:cd_into_target)
+      Commands.any_instance.stub(:ensure_working_directory)
       Commands.any_instance.stub(:clone)
       Commands.any_instance.stub(:update_submodule)
       Commands.any_instance.stub(:bundle)
@@ -49,7 +49,7 @@ describe Commands do
      end
 
      it "updates bundle" do
-      Commands.any_instance.stub(:cd_into_target)
+      Commands.any_instance.stub(:ensure_working_directory)
       Commands.any_instance.stub(:clone)
       Commands.any_instance.stub(:update_submodule)
       Commands.any_instance.stub(:link_db_config)
@@ -67,11 +67,11 @@ describe Commands do
       Commands.any_instance.stub(:pull)
       Commands.any_instance.stub(:update_submodule)
       Commands.any_instance.stub(:bundle)
-      Commands.any_instance.should_receive(:cd_into_target)
+      Commands.any_instance.should_receive(:ensure_working_directory)
     end
 
     it "pulls from the branch" do
-      Commands.any_instance.stub(:cd_into_target)
+      Commands.any_instance.stub(:ensure_working_directory)
       Commands.any_instance.stub(:touch_restart)
       Commands.any_instance.stub(:update_submodule)
       Commands.any_instance.stub(:bundle)
@@ -79,7 +79,7 @@ describe Commands do
     end
 
     it "restarts the server" do
-      Commands.any_instance.stub(:cd_into_target)
+      Commands.any_instance.stub(:ensure_working_directory)
       Commands.any_instance.stub(:pull)
       Commands.any_instance.stub(:update_submodule)
       Commands.any_instance.stub(:bundle)
@@ -87,7 +87,7 @@ describe Commands do
     end
 
     it "updates submodules" do
-      Commands.any_instance.stub(:cd_into_target)
+      Commands.any_instance.stub(:ensure_working_directory)
       Commands.any_instance.stub(:pull)
       Commands.any_instance.stub(:touch_restart)
       Commands.any_instance.stub(:bundle)
@@ -95,7 +95,7 @@ describe Commands do
     end
 
     it "updates bundle" do
-      Commands.any_instance.stub(:cd_into_target)
+      Commands.any_instance.stub(:ensure_working_directory)
       Commands.any_instance.stub(:pull)
       Commands.any_instance.stub(:touch_restart)
       Commands.any_instance.stub(:update_submodule)
@@ -136,15 +136,14 @@ describe Commands do
       end
     end
 
-    context "cd_into_target" do
+    context "ensure_working_directory" do
       before do
         Commands.any_instance.stub(:pwd).and_return('some_path')
       end
 
       it "runs command to change directory" do
-        subject.should_receive(:run).once.with('mkdir -p some_path').ordered
-        subject.should_receive(:run).once.with('cd some_path').ordered
-        subject.cd_into_target
+        FileUtils.should_receive(:mkdir_p).once.with('some_path')
+        subject.ensure_working_directory
       end
     end
 
