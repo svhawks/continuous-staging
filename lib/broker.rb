@@ -10,7 +10,7 @@ class Broker
   end
 
   def folder
-    branch.to_s.gsub('features/','').gsub('-', '_')
+    branch.to_s.gsub(/([\/-])/, '_')
   end
 
   def deploy_exists?

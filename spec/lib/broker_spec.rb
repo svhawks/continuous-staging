@@ -13,9 +13,9 @@ describe Broker do
   context "methods" do
     subject{ Broker.with_payload(payload)}
     its(:branch){ should == 'features/awesome-feature' }
-    its(:folder){ should == 'awesome_feature' }
+    its(:folder){ should == 'features_awesome_feature' }
     its(:deploy_exists?){ should be_false }
-    its(:deploy_path){ should == '/var/www/vhosts/movielala.com/staging/awesome_feature' }
+    its(:deploy_path){ should == '/var/www/vhosts/movielala.com/staging/features_awesome_feature' }
   end
 
   context "allow_deploy?" do
