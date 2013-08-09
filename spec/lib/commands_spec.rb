@@ -114,7 +114,7 @@ describe Commands do
     context "update_submodule" do
       it "runs the submodule update commands" do
         expected_cmd = 'git submodule init && git submodule update'
-        Commands.any_instance.should_receive(:system).with(expected_cmd)
+        Commands.any_instance.should_receive(:run).with(expected_cmd)
         subject.update_submodule
       end
     end
@@ -123,7 +123,7 @@ describe Commands do
       it "runs the clone command" do
         Commands.any_instance.stub(:pwd).and_return('some_path')
         expected_cmd = 'git clone git@bitbucket.org:movielalainc/web.git --branch some-branch --single-branch some_path'
-        Commands.any_instance.should_receive(:system).with(expected_cmd)
+        Commands.any_instance.should_receive(:run).with(expected_cmd)
         subject.clone
       end
     end
@@ -131,7 +131,7 @@ describe Commands do
     context "pull" do
       it "runs the pull command" do
         expected_cmd = 'git pull origin some-branch'
-        Commands.any_instance.should_receive(:system).with(expected_cmd)
+        Commands.any_instance.should_receive(:run).with(expected_cmd)
         subject.pull
       end
     end
@@ -142,15 +142,15 @@ describe Commands do
       end
 
       it "runs command to change directory" do
-        subject.should_receive(:system).once.with('mkdir -p some_path').ordered
-        subject.should_receive(:system).once.with('cd some_path').ordered
+        subject.should_receive(:run).once.with('mkdir -p some_path').ordered
+        subject.should_receive(:run).once.with('cd some_path').ordered
         subject.cd_into_target
       end
     end
 
     context "bundle" do
       it "runs command to bundle" do
-        subject.should_receive(:system).once.with('bundle --deployment --without test development')
+        subject.should_receive(:run).once.with('bundle --deployment --without test development')
         subject.bundle
       end
     end

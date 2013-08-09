@@ -1,4 +1,7 @@
+require_relative 'log'
+
 class Commands
+  include Log
   attr_accessor :pwd, :branch
 
   def create
@@ -18,20 +21,20 @@ class Commands
   end
 
   def cd_into_target
-    system %{mkdir -p #{pwd}}
-    system %{cd #{pwd}}
+    run %{mkdir -p #{pwd}}
+    run %{cd #{pwd}}
   end
 
   def link_db_config
-    system %{ln -nfs #{shared_db_config} #{target_db_config}}
+    run %{ln -nfs #{shared_db_config} #{target_db_config}}
   end
 
   def pull
-    system %{git pull origin #{branch}}
+    run %{git pull origin #{branch}}
   end
 
   def bundle
-    system %{bundle --deployment --without test development}
+    run %{bundle --deployment --without test development}
   end
 
   def self.fire(options)
@@ -43,11 +46,11 @@ class Commands
   end
 
   def clone
-    system %{git clone git@bitbucket.org:movielalainc/web.git --branch #{branch} --single-branch #{pwd}}
+    run %{git clone git@bitbucket.org:movielalainc/web.git --branch #{branch} --single-branch #{pwd}}
   end
 
   def update_submodule
-    system %{git submodule init && git submodule update}
+    run %{git submodule init && git submodule update}
   end
 
   private
@@ -61,7 +64,11 @@ class Commands
   end
 
   def touch_restart
-    system %{touch tmp/restart.txt}
+    run %{touch tmp/restart.txt}
+  end
+
+  def run command
+    logger.info "Running #{command}"
+    system command
   end
 end
-

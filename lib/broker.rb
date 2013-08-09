@@ -1,6 +1,8 @@
 require 'json'
+require_relative 'log'
 
 class Broker
+  include Log
   attr_accessor :payload 
 
   STAGING_ROOT = '/var/www/vhosts/movielala.com/staging/'
@@ -28,10 +30,14 @@ class Broker
   def deploy
     if allow_deploy?
       if deploy_exists?
+        logger.info "Existing deploy: now updating codebase"
         Commands.fire(run: :update, in: deploy_path)
       else
+        logger.info "New deploy: now setting up new app"
         Commands.fire(run: :create, in: deploy_path, branch: branch)
       end
+    else
+      logger.info "Branch #{branch} rejected"
     end
   end
 

@@ -15,11 +15,11 @@ end
 
 post '/' do
   begin
-    request_body = params[:payload]
-    logger.info "===Request Received==="
-    logger.info request_body
-    logger.info "===Request END==="
-    Broker.deploy(request_body)
+    payload = params[:payload]
+    if payload
+      logger.info payload
+      Broker.deploy(JSON.parse(payload))
+    end
   rescue Exception => e
     logger.info "===Something Went Wrong==="
     logger.info e
