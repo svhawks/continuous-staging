@@ -69,6 +69,9 @@ class Commands
 
   def run command
     logger.info "Running #{command}"
-    system command
+    Open4::popen4(command) do |pid, stdin, stdout, stderr|
+      logger.info stdout.read.strip
+      logger.info stderr.read.strip
+    end
   end
 end
