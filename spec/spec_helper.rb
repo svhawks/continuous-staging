@@ -21,43 +21,33 @@ RSpec.configure do |config|
 end
 
 def payload
-<<EOF
-{
-    "canon_url": "https://bitbucket.org", 
-    "commits": [
-        {
-            "author": "marcus", 
-            "branch": "features/awesome-feature", 
-            "files": [
-                {
-                    "file": "somefile.py", 
-                    "type": "modified"
-                }
-            ], 
-            "message": "Added some more things to somefile.py", 
-            "node": "620ade18607a", 
-            "parents": [
-                "702c70160afc"
-            ], 
-            "raw_author": "Marcus Bertrand <marcus@somedomain.com>", 
-            "raw_node": "620ade18607ac42d872b568bb92acaa9a28620e9", 
-            "revision": null, 
-            "size": -1, 
-            "timestamp": "2012-05-30 05:58:56", 
-            "utctimestamp": "2012-05-30 03:58:56+00:00"
-        }
-    ], 
-    "repository": {
-        "absolute_url": "/marcus/project-x/", 
-        "fork": false, 
-        "is_private": true, 
-        "name": "Project X", 
-        "owner": "marcus", 
-        "scm": "git", 
-        "slug": "project-x", 
-        "website": "https://atlassian.com/"
-    }, 
-    "user": "marcus"
-}
-EOF
+  {
+    "repository"=> {
+      "website"=> "",
+      "fork"=> false,
+      "name"=> "web",
+      "scm"=> "git",
+      "owner"=> "movielalainc",
+      "absolute_url"=> "/movielalainc/web/",
+      "slug"=> "web",
+      "is_private"=> true
+    },
+    "truncated"=> false,
+    "commits"=> [{
+      "node"=> "30620d669a2a",
+      "files"=> [],
+      "branch"=> "features/awesome-feature",
+      "utctimestamp"=> "2013-08-09 13=>04=>32+00=>00",
+      "timestamp"=> "2013-08-09 15=>04=>32",
+      "raw_node"=> "30620d669a2ad2e918f2a133c9a2505485753071",
+      "message"=> "Add watch trailer functional",
+      "size"=> -1,
+      "author"=> "sparrowpublic",
+      "parents"=> ["8bb0be65fac7"],
+      "raw_author"=> "Vladimir Vorobyov <sparrowpublic@gmail.com>",
+      "revision"=> nil
+    }],
+    "canon_url"=> "https=>//bitbucket.org",
+    "user"=> "sparrowpublic"
+  }
 end
