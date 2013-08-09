@@ -1,3 +1,4 @@
+require 'open4'
 require_relative 'log'
 
 class Commands
