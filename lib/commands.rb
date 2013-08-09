@@ -56,7 +56,7 @@ class Commands
   private
 
   def shared_db_config
-    '/var/www/vhosts/movielala/staging/shared/config/database.yml'
+    '/var/www/vhosts/movielala.com/staging/shared/config/database.yml'
   end
 
   def target_db_config
