@@ -11,98 +11,32 @@ describe Commands do
     end
   end
 
-  context "create command" do
-    after do
-      Commands.fire(run: :create, in: 'some_path', branch: 'features/awesome-feature')
+  context "create update commands" do
+    subject{ Commands.new }
+
+    context "create command" do
+      it "runs all commands in order" do
+        subject.should_receive(:ensure_working_directory).ordered
+        subject.should_receive(:clone).ordered
+        subject.should_receive(:update_submodule).ordered
+        subject.should_receive(:bundle).ordered
+        subject.should_receive(:link_db_config).ordered
+        subject.should_receive(:ensure_proper_permissions).ordered
+        subject.create
+      end
     end
 
-    it "changes directory to given path" do
-      Commands.any_instance.stub(:link_db_config)
-      Commands.any_instance.stub(:clone)
-      Commands.any_instance.stub(:update_submodule)
-      Commands.any_instance.stub(:bundle)
-      Commands.any_instance.should_receive(:ensure_working_directory)
-    end
-
-    it "clones repository" do
-      Commands.any_instance.stub(:ensure_working_directory)
-      Commands.any_instance.stub(:link_db_config)
-      Commands.any_instance.stub(:update_submodule)
-      Commands.any_instance.stub(:bundle)
-      Commands.any_instance.should_receive(:clone)
-    end
-
-    it "updates submodules" do
-      Commands.any_instance.stub(:ensure_working_directory)
-      Commands.any_instance.stub(:link_db_config)
-      Commands.any_instance.stub(:clone)
-      Commands.any_instance.stub(:bundle)
-      Commands.any_instance.should_receive(:update_submodule)
-    end
-
-     it "links the db config" do
-      Commands.any_instance.stub(:ensure_working_directory)
-      Commands.any_instance.stub(:clone)
-      Commands.any_instance.stub(:update_submodule)
-      Commands.any_instance.stub(:bundle)
-      Commands.any_instance.should_receive(:link_db_config)
-     end
-
-     it "updates bundle" do
-      Commands.any_instance.stub(:ensure_working_directory)
-      Commands.any_instance.stub(:clone)
-      Commands.any_instance.stub(:update_submodule)
-      Commands.any_instance.stub(:link_db_config)
-      Commands.any_instance.should_receive(:bundle)
-     end
-  end
-
-  context "update command" do
-    after do
-      Commands.fire(run: :update, in: 'some_path', branch: 'features/awesome-feature')
-    end
-
-    it "cds into target" do
-      Commands.any_instance.stub(:touch_restart)
-      Commands.any_instance.stub(:pull)
-      Commands.any_instance.stub(:update_submodule)
-      Commands.any_instance.stub(:bundle)
-      Commands.any_instance.should_receive(:ensure_working_directory)
-    end
-
-    it "pulls from the branch" do
-      Commands.any_instance.stub(:ensure_working_directory)
-      Commands.any_instance.stub(:touch_restart)
-      Commands.any_instance.stub(:update_submodule)
-      Commands.any_instance.stub(:bundle)
-      Commands.any_instance.should_receive(:pull)
-    end
-
-    it "restarts the server" do
-      Commands.any_instance.stub(:ensure_working_directory)
-      Commands.any_instance.stub(:pull)
-      Commands.any_instance.stub(:update_submodule)
-      Commands.any_instance.stub(:bundle)
-      Commands.any_instance.should_receive(:touch_restart)
-    end
-
-    it "updates submodules" do
-      Commands.any_instance.stub(:ensure_working_directory)
-      Commands.any_instance.stub(:pull)
-      Commands.any_instance.stub(:touch_restart)
-      Commands.any_instance.stub(:bundle)
-      Commands.any_instance.should_receive(:update_submodule)
-    end
-
-    it "updates bundle" do
-      Commands.any_instance.stub(:ensure_working_directory)
-      Commands.any_instance.stub(:pull)
-      Commands.any_instance.stub(:touch_restart)
-      Commands.any_instance.stub(:update_submodule)
-      Commands.any_instance.should_receive(:bundle)
+    context "update command" do
+      it "updates bundle" do
+        subject.should_receive(:ensure_working_directory).ordered
+        subject.should_receive(:pull).ordered
+        subject.should_receive(:update_submodule).ordered
+        subject.should_receive(:bundle).ordered
+        subject.should_receive(:touch_restart).ordered
+        subject.update
+      end
     end
   end
-
 
   context "instance methods" do
     subject{ Commands.new }
