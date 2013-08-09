@@ -25,6 +25,10 @@ class Commands
     FileUtils.mkdir_p pwd
   end
 
+  def ensure_proper_permissions
+    run %{chown -R www-data:www-data #{pwd}}
+  end
+
   def link_db_config
     run %{ln -nfs #{shared_db_config} #{target_db_config}}
   end

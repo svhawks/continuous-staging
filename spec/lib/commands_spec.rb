@@ -153,5 +153,13 @@ describe Commands do
         subject.bundle
       end
     end
+
+    context "ensure_proper_permissions" do
+      it "runs command to ensure proper permissions" do
+        Commands.any_instance.stub(:pwd).and_return('some_path')
+        subject.should_receive(:run).once.with('chown -R www-data:www-data some_path')
+        subject.ensure_proper_permissions
+      end
+    end
   end
 end
