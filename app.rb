@@ -11,7 +11,7 @@ end
 
 post '/' do
   begin
-    request_body = request.body.read.to_s
+    request_body = params[:payload]
     logger.info "===Request Received==="
     logger.info request_body
     logger.info "===Request END==="
