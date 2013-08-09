@@ -150,7 +150,7 @@ describe Commands do
 
     context "bundle" do
       it "runs command to bundle" do
-        subject.should_receive(:run).once.with('bundle --deployment --without test development')
+        subject.should_receive(:run).once.with('bundle --path /var/www/vhosts/movielala.com/staging/shared/bundle --without test development')
         subject.bundle
       end
     end

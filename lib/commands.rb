@@ -34,7 +34,7 @@ class Commands
   end
 
   def bundle
-    run %{bundle --deployment --without test development}
+    run %{bundle --path #{shared_bundle_path} --without test development}
   end
 
   def self.fire(options)
@@ -56,7 +56,15 @@ class Commands
   private
 
   def shared_db_config
-    '/var/www/vhosts/movielala.com/staging/shared/config/database.yml'
+    shared_root + 'config/database.yml'
+  end
+
+  def shared_bundle_path
+    shared_root + 'bundle'
+  end
+
+  def shared_root
+    '/var/www/vhosts/movielala.com/staging/shared/'
   end
 
   def target_db_config
