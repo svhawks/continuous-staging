@@ -9,6 +9,10 @@ configure do
   use Rack::CommonLogger, file
 end
 
+get '/' do
+  'OK'
+end
+
 post '/' do
   begin
     request_body = params[:payload]
