@@ -39,7 +39,7 @@ class Commands
   end
 
   def bundle
-    run %{bundle --path #{shared_bundle_path} --gemfile #{pwd}/Gemfile --without test development}
+    run_with_clean_env %{bundle --path #{shared_bundle_path} --gemfile #{pwd}/Gemfile --without test development}
   end
 
   def self.fire(options)
@@ -85,6 +85,12 @@ class Commands
     Open4::popen4(command, chdir: pwd) do |pid, stdin, stdout, stderr|
       logger.info stdout.read.strip
       logger.info stderr.read.strip
+    end
+  end
+
+  def run_with_clean_env command
+    Bundler.with_clean_env do
+      run command
     end
   end
 end
