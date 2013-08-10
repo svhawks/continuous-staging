@@ -12,7 +12,7 @@ class Broker
   end
 
   def folder
-    branch.to_s.gsub(/([\/-])/, '_')
+    branch.to_s.split('/').last.gsub(/([\/-])/, '_')
   end
 
   def deploy_exists?
