@@ -84,7 +84,7 @@ describe Commands do
     context "bundle" do
       it "runs command to bundle" do
         Commands.any_instance.stub(:pwd).and_return('some_path')
-        subject.should_receive(:run).once.with('cd some_path && bundle --path /var/www/vhosts/movielala.com/staging/shared/bundle --without test development')
+        subject.should_receive(:run).once.with('bundle --path /var/www/vhosts/movielala.com/staging/shared/bundle --gemfile some_path/Gemfile --without test development')
         subject.bundle
       end
     end

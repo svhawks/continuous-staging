@@ -39,7 +39,7 @@ class Commands
   end
 
   def bundle
-    run %{cd #{pwd} && bundle --path #{shared_bundle_path} --without test development}
+    run %{bundle --path #{shared_bundle_path} --gemfile #{pwd}/Gemfile --without test development}
   end
 
   def self.fire(options)
