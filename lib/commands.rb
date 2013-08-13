@@ -35,7 +35,7 @@ class Commands
   end
 
   def pull
-    run %{git pull origin #{branch}}
+    run %{git checkout . && git pull origin #{branch}}
   end
 
   def bundle
