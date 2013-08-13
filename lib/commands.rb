@@ -19,6 +19,7 @@ class Commands
     pull
     update_submodule
     bundle
+    link_db_config
     touch_restart
   end
 
