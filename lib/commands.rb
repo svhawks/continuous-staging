@@ -20,6 +20,7 @@ class Commands
     update_submodule
     bundle
     link_db_config
+    ensure_proper_permissions
     touch_restart
   end
 

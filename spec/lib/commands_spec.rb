@@ -33,6 +33,7 @@ describe Commands do
         subject.should_receive(:update_submodule).ordered
         subject.should_receive(:bundle).ordered
         subject.should_receive(:link_db_config).ordered
+        subject.should_receive(:ensure_proper_permissions).ordered
         subject.should_receive(:touch_restart).ordered
         subject.update
       end
