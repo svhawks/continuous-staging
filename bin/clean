@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+
+require_relative '../lib/cleaner'
+require_relative '../lib/commands'
+
+Cleaner.new.run
