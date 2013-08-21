@@ -60,6 +60,11 @@ class Commands
     run %{git submodule init && git submodule update}
   end
 
+  def rm_rf folders
+    removal_command = "rm -rf #{folders.join(' ')}"
+    run(removal_command, staging_root)
+  end
+
   private
 
   def shared_db_config
@@ -68,6 +73,10 @@ class Commands
 
   def shared_bundle_path
     shared_root + 'bundle'
+  end
+
+  def staging_root
+    '/var/www/vhosts/movielala.com/staging/'
   end
 
   def shared_root
@@ -82,9 +91,9 @@ class Commands
     run %{touch tmp/restart.txt}
   end
 
-  def run command
-    logger.info "Running #{command}"
-    Open4::popen4(command, chdir: pwd) do |pid, stdin, stdout, stderr|
+  def run(command, target = pwd)
+    logger.info "Running #{command} in #{target}"
+    Open4::popen4(command, chdir: target) do |pid, stdin, stdout, stderr|
       logger.info stdout.read.strip
       logger.info stderr.read.strip
     end

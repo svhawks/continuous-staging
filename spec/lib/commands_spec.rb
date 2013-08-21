@@ -98,5 +98,13 @@ describe Commands do
         subject.ensure_proper_permissions
       end
     end
+
+    context "rm_rf" do
+      it "runs command to delete all fodlers" do
+        Commands.any_instance.stub(:staging_root).and_return('some_path')
+        subject.should_receive(:run).once.with('rm -rf /some/path /some/other/path', 'some_path')
+        subject.rm_rf(['/some/path', '/some/other/path'])
+      end
+    end
   end
 end
