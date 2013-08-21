@@ -61,8 +61,10 @@ class Commands
   end
 
   def rm_rf folders
-    removal_command = "rm -rf #{folders.join(' ')}"
-    run(removal_command, staging_root)
+    if folders && folders.length > 0
+      removal_command = "rm -rf #{folders.join(' ')}"
+      run(removal_command, staging_root)
+    end
   end
 
   private

@@ -100,7 +100,13 @@ describe Commands do
     end
 
     context "rm_rf" do
-      it "runs command to delete all fodlers" do
+      it "only runs command if folder are present" do
+        Commands.any_instance.stub(:staging_root).and_return('some_path')
+        subject.should_receive(:run).never
+        subject.rm_rf([])
+      end
+
+      it "runs command to delete all folders" do
         Commands.any_instance.stub(:staging_root).and_return('some_path')
         subject.should_receive(:run).once.with('rm -rf /some/path /some/other/path', 'some_path')
         subject.rm_rf(['/some/path', '/some/other/path'])
