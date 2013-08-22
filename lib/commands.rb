@@ -104,7 +104,7 @@ class Commands
 
     logger.info "Status #{status} and error #{error}"
 
-    [status, error]
+    [status.exitstatus, error]
   end
 
   def run_with_clean_env command
