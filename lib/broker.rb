@@ -1,4 +1,5 @@
 require 'json'
+require 'active_support/core_ext/string'
 require_relative 'log'
 
 class Broker
@@ -12,7 +13,7 @@ class Broker
   end
 
   def folder
-    branch.to_s.split('/').last.gsub(/([\/-])/, '_')
+    branch.to_s.split('/').last.to_s.parameterize.dasherize
   end
 
   def deploy_exists?

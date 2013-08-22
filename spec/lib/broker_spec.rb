@@ -13,9 +13,23 @@ describe Broker do
   context "methods" do
     subject{ Broker.with_payload(payload)}
     its(:branch){ should == 'features/awesome-feature' }
-    its(:folder){ should == 'awesome_feature' }
+    its(:folder){ should == 'awesome-feature' }
     its(:deploy_exists?){ should be_false }
-    its(:deploy_path){ should == '/var/www/vhosts/movielala.com/staging/awesome_feature' }
+    its(:deploy_path){ should == '/var/www/vhosts/movielala.com/staging/awesome-feature' }
+  end
+
+  context "subdomain string manipulation" do
+    subject{ Broker.with_payload(payload)}
+
+    it "handles weird chars" do
+      Broker.any_instance.stub(:branch).and_return('Şahin')
+      expect(subject.folder).to eql('sahin')
+    end
+
+    it "handles underscores" do
+      Broker.any_instance.stub(:branch).and_return('some_underscored_name')
+      expect(subject.folder).to eql('some-underscored-name')
+    end
   end
 
   context "allow_deploy?" do
