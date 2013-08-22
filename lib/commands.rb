@@ -95,11 +95,15 @@ class Commands
 
   def run(command, target = pwd)
     logger.info "Running #{command} in #{target}"
+    error = nil
     status = Open4::popen4(command, chdir: target) do |pid, stdin, stdout, stderr|
       logger.info stdout.read.strip
       error = stderr.read.strip
       logger.info error
     end
+
+    logger.info "Status #{status} and error #{error}"
+
     [status, error]
   end
 
