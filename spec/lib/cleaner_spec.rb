@@ -42,7 +42,7 @@ describe Cleaner do
 
     context "with update failure" do
       it "marks deploy for deletion" do
-        Commands.any_instance.stub(:pull).and_return(false)
+        Commands.any_instance.stub(:pull).and_return([1, "Couldn't find remote ref non-existent-branch"])
         subject.run
         expect(subject.deploys_to_remove).to eql(['/some/path'])
       end

@@ -20,7 +20,8 @@ class Cleaner
   def run
     deploys.each do |path|
       command.pwd = path
-      unless command.pull
+      status, error = command.pull
+      if status == 1 && error.to_s.include?("Couldn't find remote ref")
         @deploys_to_remove << path
       end
     end

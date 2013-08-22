@@ -95,10 +95,12 @@ class Commands
 
   def run(command, target = pwd)
     logger.info "Running #{command} in #{target}"
-    Open4::popen4(command, chdir: target) do |pid, stdin, stdout, stderr|
+    status = Open4::popen4(command, chdir: target) do |pid, stdin, stdout, stderr|
       logger.info stdout.read.strip
-      logger.info stderr.read.strip
+      error = stderr.read.strip
+      logger.info error
     end
+    [status, error]
   end
 
   def run_with_clean_env command
