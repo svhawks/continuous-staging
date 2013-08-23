@@ -34,6 +34,11 @@ def payload
     },
     "truncated"=> false,
     "commits"=> [{
+      "node"=> "37620d669a2a",
+      "files"=> [],
+      "branch" => nil
+    },
+    {
       "node"=> "30620d669a2a",
       "files"=> [],
       "branch"=> "features/awesome-feature",
