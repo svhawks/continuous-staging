@@ -62,6 +62,11 @@ describe Cleaner do
         Commands.any_instance.should_receive(:ensure_proper_permissions)
         subject.run
       end
+
+      it "re links the shared db" do
+        Commands.any_instance.should_receive(:link_db_config)
+        subject.run
+      end
     end
 
     it "runs command to delete deploys" do

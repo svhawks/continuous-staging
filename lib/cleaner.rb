@@ -26,6 +26,7 @@ class Cleaner
       else
         command.ensure_proper_permissions
         command.touch_restart
+        command.link_db_config
       end
     end
 
