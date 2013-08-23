@@ -21,6 +21,6 @@
 
 set :output, "/var/www/vhosts/movielala.com/staging/runner/log/cron.log"
 
-every 4.hours do
+every 5.mins do
   command File.expand_path(File.join(File.dirname(__FILE__), '..', 'bin', 'clean'))
 end
