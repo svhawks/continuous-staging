@@ -67,6 +67,10 @@ class Commands
     end
   end
 
+  def touch_restart
+    run %{touch tmp/restart.txt}
+  end
+
   private
 
   def shared_db_config
@@ -87,10 +91,6 @@ class Commands
 
   def target_db_config
     "#{pwd}/config/database.yml"
-  end
-
-  def touch_restart
-    run %{touch tmp/restart.txt}
   end
 
   def run(command, target = pwd)

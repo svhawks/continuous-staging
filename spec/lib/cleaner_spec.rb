@@ -48,6 +48,22 @@ describe Cleaner do
       end
     end
 
+    context "with update success" do
+      before do
+        Commands.any_instance.stub(:pull).and_return([0, nil])
+      end
+
+      it "restarts the passenger" do
+        Commands.any_instance.should_receive(:touch_restart)
+        subject.run
+      end
+
+      it "ensures proper permissions" do
+        Commands.any_instance.should_receive(:ensure_proper_permissions)
+        subject.run
+      end
+    end
+
     it "runs command to delete deploys" do
       Cleaner.any_instance.stub(:deploys_to_remove).and_return(['/some/path', '/some/other/path'])
       Commands.any_instance.should_receive(:rm_rf).with(['/some/path', '/some/other/path'])

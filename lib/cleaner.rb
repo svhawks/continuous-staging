@@ -23,6 +23,9 @@ class Cleaner
       status, error = command.pull
       if status == 1 && error.to_s.include?("Couldn't find remote ref")
         @deploys_to_remove << path
+      else
+        command.ensure_proper_permissions
+        command.touch_restart
       end
     end
 
