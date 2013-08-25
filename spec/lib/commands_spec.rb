@@ -117,7 +117,7 @@ describe Commands do
     context "broadcast_on_hipchat" do
       it "delegates to the hipchat integration" do
         subject.stub!(:pwd).and_return('/some/path')
-        HipChat.should_receive(:update).with('/some/path')
+        HipChatIntegration.should_receive(:update).with('/some/path')
         subject.broadcast_on_hipchat
       end
     end

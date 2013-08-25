@@ -47,7 +47,7 @@ class Commands
   end
 
   def broadcast_on_hipchat
-    HipChat.update(pwd)
+    HipChatIntegration.update(pwd)
   end
 
   def self.fire(options)
