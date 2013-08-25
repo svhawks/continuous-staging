@@ -1,5 +1,6 @@
 require 'open4'
 require_relative 'log'
+require_relative 'hip_chat'
 
 class Commands
   include Log

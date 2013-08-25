@@ -1,5 +1,4 @@
 require_relative '../../lib/commands'
-require_relative '../../lib/hip_chat'
 require_relative '../spec_helper'
 
 describe Commands do
