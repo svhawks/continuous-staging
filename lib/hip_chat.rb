@@ -18,7 +18,7 @@ class HipChatIntegration
   end
 
   def update
-    client.room_message(room_id, from, message)
+    client.rooms_message(room_id, from, message)
   end
 
   def from

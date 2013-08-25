@@ -22,7 +22,7 @@ describe HipChatIntegration do
     it "delegates to room broadcast msg" do
       HipChatIntegration.any_instance.stub(:message).and_return('something hppnd')
       HipChatIntegration.any_instance.stub(:room_id).and_return('test-room')
-      HipChat::API.any_instance.should_receive(:room_message).with('test-room', 'MLLDeployBot', 'something hppnd')
+      HipChat::API.any_instance.should_receive(:rooms_message).with('test-room', 'MLLDeployBot', 'something hppnd')
       subject.update
     end
   end
