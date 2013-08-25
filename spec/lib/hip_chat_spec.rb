@@ -32,7 +32,7 @@ describe HipChatIntegration do
 
     it "delegates to room broadcast msg" do
       HipChatIntegration.any_instance.stub(:path).and_return('/var/some-branch')
-      expect(subject.message).to eql('http://some-branch.staging.movielala.com has been deployed!')
+      expect(subject.message).to eql('<a href="http://some-branch.staging.movielala.com">http://some-branch.staging.movielala.com</a> has been deployed!')
     end
   end
 end

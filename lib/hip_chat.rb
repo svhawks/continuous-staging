@@ -26,7 +26,7 @@ class HipChatIntegration
   end
 
   def message
-    "#{url} has been deployed!"
+    %{<a href="#{url}">#{url}</a> has been deployed!}
   end
 
   def self.update path
