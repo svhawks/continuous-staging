@@ -1,4 +1,5 @@
 require_relative '../../lib/commands'
+require_relative '../../lib/hip_chat'
 require_relative '../spec_helper'
 
 describe Commands do
@@ -22,6 +23,7 @@ describe Commands do
         subject.should_receive(:bundle).ordered
         subject.should_receive(:link_db_config).ordered
         subject.should_receive(:ensure_proper_permissions).ordered
+        subject.should_receive(:broadcast_on_hipchat).ordered
         subject.create
       end
     end
@@ -69,8 +71,8 @@ describe Commands do
         expected_cmd = 'git checkout . && git pull origin some-branch'
         Commands.any_instance.should_receive(:run).with(expected_cmd)
         subject.pull
-      end
     end
+      end
 
     context "ensure_working_directory" do
       before do
@@ -110,6 +112,14 @@ describe Commands do
         Commands.any_instance.stub(:staging_root).and_return('some_path')
         subject.should_receive(:run).once.with('rm -rf /some/path /some/other/path', 'some_path')
         subject.rm_rf(['/some/path', '/some/other/path'])
+      end
+    end
+
+    context "broadcast_on_hipchat" do
+      it "delegates to the hipchat integration" do
+        subject.stub!(:pwd).and_return('/some/path')
+        HipChat.should_receive(:update).with('/some/path')
+        subject.broadcast_on_hipchat
       end
     end
   end
