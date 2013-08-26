@@ -50,12 +50,25 @@ describe Cleaner do
 
     context "with update success" do
       before do
-        Commands.any_instance.stub(:pull).and_return([0, nil])
+        Commands.any_instance.stub(:pull).and_return([0, nil, nil])
       end
 
-      it "restarts the passenger" do
-        Commands.any_instance.should_receive(:touch_restart)
-        subject.run
+      context "restarting the app" do
+        context "with new codes" do
+          it "restarts the app" do
+            Commands.any_instance.stub(:pull).and_return([0, nil, nil])
+            Commands.any_instance.should_receive(:touch_restart)
+            subject.run
+          end
+        end
+
+        context "with no new updates" do
+          it "does not restart the app" do
+            Commands.any_instance.stub(:pull).and_return([0, nil, 'Already up-to-date.'])
+            Commands.any_instance.should_receive(:touch_restart).never()
+            subject.run
+          end
+        end
       end
 
       it "ensures proper permissions" do
