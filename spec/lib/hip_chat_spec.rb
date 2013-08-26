@@ -20,19 +20,24 @@ describe HipChatIntegration do
     subject { HipChatIntegration.new }
 
     it "delegates to room broadcast msg" do
-      HipChatIntegration.any_instance.stub(:message).and_return('something hppnd')
+      HipChatIntegration.any_instance.stub(:message_for_new_deploy).and_return('something hppnd')
       HipChatIntegration.any_instance.stub(:room_id).and_return('test-room')
       HipChat::API.any_instance.should_receive(:rooms_message).with('test-room', 'MLLDeployBot', 'something hppnd')
       subject.update
     end
   end
 
-  context "message" do
+  context "messages" do
     subject { HipChatIntegration.new }
 
-    it "delegates to room broadcast msg" do
+    it "has proper new deploy message" do
       HipChatIntegration.any_instance.stub(:path).and_return('/var/some-branch')
-      expect(subject.message).to eql('<a href="http://some-branch.staging.movielala.com">http://some-branch.staging.movielala.com</a> has been deployed!')
+      expect(subject.message_for_new_deploy).to eql('<a href="http://some-branch.staging.movielala.com">http://some-branch.staging.movielala.com</a> has been deployed!')
+    end
+
+    it "has proper update message" do
+      HipChatIntegration.any_instance.stub(:path).and_return('/var/some-branch')
+      expect(subject.message_for_update).to eql('<a href="http://some-branch.staging.movielala.com">http://some-branch.staging.movielala.com</a> has been updated!')
     end
   end
 end

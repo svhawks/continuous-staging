@@ -22,7 +22,7 @@ describe Commands do
         subject.should_receive(:bundle).ordered
         subject.should_receive(:link_db_config).ordered
         subject.should_receive(:ensure_proper_permissions).ordered
-        subject.should_receive(:broadcast_on_hipchat).ordered
+        subject.should_receive(:broadcast_new_deploy_on_hipchat).ordered
         subject.create
       end
     end
@@ -36,6 +36,7 @@ describe Commands do
         subject.should_receive(:link_db_config).ordered
         subject.should_receive(:ensure_proper_permissions).ordered
         subject.should_receive(:touch_restart).ordered
+        subject.should_receive(:broadcast_update_on_hipchat).ordered
         subject.update
       end
     end
@@ -114,11 +115,23 @@ describe Commands do
       end
     end
 
-    context "broadcast_on_hipchat" do
-      it "delegates to the hipchat integration" do
+    context "broadcast helpers" do
+      before do
         subject.stub(:pwd).and_return('/some/path')
-        HipChatIntegration.should_receive(:update).with('/some/path')
-        subject.broadcast_on_hipchat
+      end
+
+      context "broadcast_new_deploy_on_hipchat" do
+        it "delegates to the hipchat integration" do
+          HipChatIntegration.should_receive(:update).with('/some/path', :new_deploy)
+          subject.broadcast_new_deploy_on_hipchat
+        end
+      end
+
+      context "broadcast_update_on_hipchat" do
+        it "delegates to the hipchat integration" do
+          HipChatIntegration.should_receive(:update).with('/some/path', :update)
+          subject.broadcast_update_on_hipchat
+        end
       end
     end
 

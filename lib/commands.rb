@@ -13,7 +13,7 @@ class Commands
     bundle
     link_db_config
     ensure_proper_permissions
-    broadcast_on_hipchat
+    broadcast_new_deploy_on_hipchat
   end
 
   def update
@@ -24,6 +24,7 @@ class Commands
     link_db_config
     ensure_proper_permissions
     touch_restart
+    broadcast_update_on_hipchat
   end
 
   def ensure_working_directory
@@ -46,8 +47,12 @@ class Commands
     run_with_clean_env %{bundle --path #{shared_bundle_path} --gemfile #{pwd}/Gemfile --without test development}
   end
 
-  def broadcast_on_hipchat
-    HipChatIntegration.update(pwd)
+  def broadcast_new_deploy_on_hipchat
+    HipChatIntegration.update(pwd, :new_deploy)
+  end
+
+  def broadcast_update_on_hipchat
+    HipChatIntegration.update(pwd, :update)
   end
 
   def self.fire(options)
