@@ -67,7 +67,7 @@ describe Commands do
 
     context "pull" do
       it "runs the pull command" do
-        expected_cmd = 'git checkout . && git pull origin some-branch'
+        expected_cmd = 'git reset HEAD && git checkout . && git clean -f -d && git pull origin some-branch'
         Commands.any_instance.should_receive(:run).with(expected_cmd)
         subject.pull
     end

@@ -39,7 +39,7 @@ class Commands
   end
 
   def pull
-    run %{git checkout . && git pull origin #{branch}}
+    run %{git reset HEAD && git checkout . && git clean -f -d && git pull origin #{branch}}
   end
 
   def bundle
@@ -101,16 +101,19 @@ class Commands
 
   def run(command, target = pwd)
     logger.info "Running #{command} in #{target}"
-    error = nil
+    error, success = nil
     status = Open4::popen4(command, chdir: target) do |pid, stdin, stdout, stderr|
-      logger.info stdout.read.strip
+      success = stdout.read.strip
       error = stderr.read.strip
+      logger.info success
       logger.info error
     end
 
-    logger.info "Status #{status} and error #{error}"
+    logger.info "Status: #{status}"
+    logger.info "STDOUT #{success}"
+    logger.info "STDERR #{error}"
 
-    [status.exitstatus, error]
+    [status.exitstatus, error, success]
   end
 
   def run_with_clean_env command
