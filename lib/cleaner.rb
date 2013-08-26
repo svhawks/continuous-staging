@@ -1,7 +1,7 @@
 class Cleaner
   attr_reader :deploys_to_remove
 
-  STAGING_ROOT = '/var/www/vhosts/movielala.com/staging/'
+  STAGING_ROOT = '/var/www/vhosts/movielala.com/staging'
 
   def initialize
     @deploys_to_remove = []
