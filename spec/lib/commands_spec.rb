@@ -116,9 +116,17 @@ describe Commands do
 
     context "broadcast_on_hipchat" do
       it "delegates to the hipchat integration" do
-        subject.stub!(:pwd).and_return('/some/path')
+        subject.stub(:pwd).and_return('/some/path')
         HipChatIntegration.should_receive(:update).with('/some/path')
         subject.broadcast_on_hipchat
+      end
+    end
+
+    context "touch_restart" do
+      it "touches restart.txt and warms up the app" do
+        subject.stub(:pwd).and_return('/some/awesome-feature')
+        subject.should_receive(:run).once.with('touch tmp/restart.txt && curl http://awesome-feature.staging.movielala.com > /dev/null')
+        subject.touch_restart
       end
     end
   end

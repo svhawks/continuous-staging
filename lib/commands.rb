@@ -74,7 +74,7 @@ class Commands
   end
 
   def touch_restart
-    run %{touch tmp/restart.txt}
+    run %{touch tmp/restart.txt && curl #{url} > /dev/null}
   end
 
   private
@@ -120,5 +120,10 @@ class Commands
     Bundler.with_clean_env do
       run command
     end
+  end
+
+  def url
+    sub_domain = pwd.split('/').last
+    "http://#{sub_domain}.staging.movielala.com"
   end
 end

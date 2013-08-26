@@ -36,6 +36,7 @@ describe Cleaner do
 
     it "updates code for all deploys" do
       Commands.any_instance.should_receive(:pwd=).with('/some/path')
+      Commands.any_instance.stub(:pwd).and_return('/some/path')
       Commands.any_instance.should_receive(:pull)
       subject.run
     end
