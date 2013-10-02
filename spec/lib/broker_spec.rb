@@ -47,6 +47,11 @@ describe Broker do
       broker = Broker.with_payload({'commits' => [{'branch' => 'master'}]})
       expect(broker.allow_deploy?).to be_true
     end
+
+    it "allows production" do
+      broker = Broker.with_payload({'commits' => [{'branch' => 'production'}]})
+      expect(broker.allow_deploy?).to be_true
+    end
   end
 
   context "deploy" do
