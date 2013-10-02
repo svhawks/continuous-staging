@@ -21,6 +21,7 @@ describe Commands do
         subject.should_receive(:update_submodule).ordered
         subject.should_receive(:bundle).ordered
         subject.should_receive(:link_db_config).ordered
+        subject.should_receive(:link_resque_config).ordered
         subject.should_receive(:ensure_proper_permissions).ordered
         subject.should_receive(:broadcast_new_deploy_on_hipchat).ordered
         subject.create
@@ -34,6 +35,7 @@ describe Commands do
         subject.should_receive(:update_submodule).ordered
         subject.should_receive(:bundle).ordered
         subject.should_receive(:link_db_config).ordered
+        subject.should_receive(:link_resque_config).ordered
         subject.should_receive(:ensure_proper_permissions).ordered
         subject.should_receive(:touch_restart).ordered
         subject.should_receive(:broadcast_update_on_hipchat).ordered
@@ -71,8 +73,26 @@ describe Commands do
         expected_cmd = 'git reset HEAD && git checkout . && git clean -f -d && git pull origin some-branch'
         Commands.any_instance.should_receive(:run).with(expected_cmd)
         subject.pull
-    end
       end
+    end
+
+    context "link_resque_config" do
+      it "symlinks shared resque config" do
+        Commands.any_instance.stub(:pwd).and_return('root_path')
+        expected_cmd = 'ln -nfs /var/www/vhosts/movielala.com/staging/shared/config/settings/resque.yml root_path/config/settings/resque.yml'
+        Commands.any_instance.should_receive(:run).with(expected_cmd)
+        subject.link_resque_config
+      end
+    end
+
+    context "link_db_config" do
+      it "symlinks shared db config" do
+        Commands.any_instance.stub(:pwd).and_return('root_path')
+        expected_cmd = 'ln -nfs /var/www/vhosts/movielala.com/staging/shared/config/database.yml root_path/config/database.yml'
+        Commands.any_instance.should_receive(:run).with(expected_cmd)
+        subject.link_db_config
+      end
+    end
 
     context "ensure_working_directory" do
       before do

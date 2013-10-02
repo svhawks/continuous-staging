@@ -12,6 +12,7 @@ class Commands
     update_submodule
     bundle
     link_db_config
+    link_resque_config
     ensure_proper_permissions
     broadcast_new_deploy_on_hipchat
   end
@@ -22,6 +23,7 @@ class Commands
     update_submodule
     bundle
     link_db_config
+    link_resque_config
     ensure_proper_permissions
     touch_restart
     broadcast_update_on_hipchat
@@ -37,6 +39,10 @@ class Commands
 
   def link_db_config
     run %{ln -nfs #{shared_db_config} #{target_db_config}}
+  end
+
+  def link_resque_config
+    run %{ln -nfs #{shared_resque_config} #{target_resque_config}}
   end
 
   def pull
@@ -88,6 +94,10 @@ class Commands
     shared_root + 'config/database.yml'
   end
 
+  def shared_resque_config
+    shared_root + 'config/settings/resque.yml'
+  end
+
   def shared_bundle_path
     shared_root + 'bundle'
   end
@@ -102,6 +112,10 @@ class Commands
 
   def target_db_config
     "#{pwd}/config/database.yml"
+  end
+
+  def target_resque_config
+    "#{pwd}/config/settings/resque.yml"
   end
 
   def run(command, target = pwd)
