@@ -13,6 +13,7 @@ class Commands
     bundle
     link_db_config
     link_resque_config
+    link_session_store
     ensure_proper_permissions
     broadcast_new_deploy_on_hipchat
   end
@@ -24,6 +25,7 @@ class Commands
     bundle
     link_db_config
     link_resque_config
+    link_session_store
     ensure_proper_permissions
     touch_restart
     broadcast_update_on_hipchat
@@ -43,6 +45,10 @@ class Commands
 
   def link_resque_config
     run %{ln -nfs #{shared_resque_config} #{target_resque_config}}
+  end
+
+  def link_session_store
+    run %{ln -nfs #{shared_session_store} #{target_session_store}}
   end
 
   def pull
@@ -98,6 +104,10 @@ class Commands
     shared_root + 'config/settings/resque.yml'
   end
 
+  def shared_session_store
+    shared_root + 'config/initializers/session_store.rb'
+  end
+
   def shared_bundle_path
     shared_root + 'bundle'
   end
@@ -116,6 +126,10 @@ class Commands
 
   def target_resque_config
     "#{pwd}/config/settings/resque.yml"
+  end
+
+  def target_session_store
+    "#{pwd}/config/initializers/session_store.rb"
   end
 
   def run(command, target = pwd)
