@@ -21,8 +21,7 @@ describe Commands do
         subject.should_receive(:update_submodule).ordered
         subject.should_receive(:bundle).ordered
         subject.should_receive(:link_db_config).ordered
-        subject.should_receive(:link_resque_config).ordered
-        subject.should_receive(:link_session_store).ordered
+        subject.should_receive(:link_shared_log).ordered
         subject.should_receive(:ensure_proper_permissions).ordered
         subject.should_receive(:broadcast_new_deploy_on_hipchat).ordered
         subject.create
@@ -36,8 +35,7 @@ describe Commands do
         subject.should_receive(:update_submodule).ordered
         subject.should_receive(:bundle).ordered
         subject.should_receive(:link_db_config).ordered
-        subject.should_receive(:link_resque_config).ordered
-        subject.should_receive(:link_session_store).ordered
+        subject.should_receive(:link_shared_log).ordered
         subject.should_receive(:ensure_proper_permissions).ordered
         subject.should_receive(:touch_restart).ordered
         subject.should_receive(:broadcast_update_on_hipchat).ordered
@@ -78,12 +76,12 @@ describe Commands do
       end
     end
 
-    context "link_resque_config" do
+    context "link_shared_log" do
       it "symlinks shared resque config" do
         Commands.any_instance.stub(:pwd).and_return('root_path')
-        expected_cmd = 'ln -nfs /var/www/vhosts/movielala.com/staging/shared/config/settings/resque.yml root_path/config/settings/resque.yml'
+        expected_cmd = 'ln -nfs /var/www/vhosts/movielala.com/staging/shared/log root_path/log'
         Commands.any_instance.should_receive(:run).with(expected_cmd)
-        subject.link_resque_config
+        subject.link_shared_log
       end
     end
 
@@ -93,15 +91,6 @@ describe Commands do
         expected_cmd = 'ln -nfs /var/www/vhosts/movielala.com/staging/shared/config/database.yml root_path/config/database.yml'
         Commands.any_instance.should_receive(:run).with(expected_cmd)
         subject.link_db_config
-      end
-    end
-
-    context "link_session_store" do
-      it "symlinks shared session config" do
-        Commands.any_instance.stub(:pwd).and_return('root_path')
-        expected_cmd = 'ln -nfs /var/www/vhosts/movielala.com/staging/shared/config/initializers/session_store.rb root_path/config/initializers/session_store.rb'
-        Commands.any_instance.should_receive(:run).with(expected_cmd)
-        subject.link_session_store
       end
     end
 

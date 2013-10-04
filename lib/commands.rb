@@ -12,8 +12,7 @@ class Commands
     update_submodule
     bundle
     link_db_config
-    link_resque_config
-    link_session_store
+    link_shared_log
     ensure_proper_permissions
     broadcast_new_deploy_on_hipchat
   end
@@ -24,8 +23,7 @@ class Commands
     update_submodule
     bundle
     link_db_config
-    link_resque_config
-    link_session_store
+    link_shared_log
     ensure_proper_permissions
     touch_restart
     broadcast_update_on_hipchat
@@ -43,12 +41,8 @@ class Commands
     run %{ln -nfs #{shared_db_config} #{target_db_config}}
   end
 
-  def link_resque_config
-    run %{ln -nfs #{shared_resque_config} #{target_resque_config}}
-  end
-
-  def link_session_store
-    run %{ln -nfs #{shared_session_store} #{target_session_store}}
+  def link_shared_log
+    run %{ln -nfs #{shared_log} #{target_log}}
   end
 
   def pull
@@ -124,12 +118,12 @@ class Commands
     "#{pwd}/config/database.yml"
   end
 
-  def target_resque_config
-    "#{pwd}/config/settings/resque.yml"
+  def shared_log
+    shared_root + 'log'
   end
 
-  def target_session_store
-    "#{pwd}/config/initializers/session_store.rb"
+  def target_log
+    "#{pwd}/log"
   end
 
   def run(command, target = pwd)
