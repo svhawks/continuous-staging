@@ -70,7 +70,7 @@ class Commands
   end
 
   def clone
-    run %{git clone git@bitbucket.org:movielalainc/web.git --branch #{branch} --single-branch #{pwd}}
+    run %{git clone git@github.com:movielala/web.git --branch #{branch} --single-branch #{pwd}}
   end
 
   def update_submodule
