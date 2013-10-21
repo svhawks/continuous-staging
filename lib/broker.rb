@@ -9,7 +9,7 @@ class Broker
   STAGING_ROOT = '/var/www/vhosts/movielala.com/staging/'
 
   def branch
-    payload['commits'].last['branch']
+    payload['ref'].gsub('refs/heads/', '').to_s
   end
 
   def folder

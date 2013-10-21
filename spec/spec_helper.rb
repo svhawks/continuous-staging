@@ -21,38 +21,41 @@ RSpec.configure do |config|
 end
 
 def payload
-  {
-    "repository"=> {
-      "website"=> "",
-      "fork"=> false,
-      "name"=> "web",
-      "scm"=> "git",
-      "owner"=> "movielalainc",
-      "absolute_url"=> "/movielalainc/web/",
-      "slug"=> "web",
-      "is_private"=> true
-    },
-    "truncated"=> false,
-    "commits"=> [{
-      "node"=> "37620d669a2a",
-      "files"=> [],
-      "branch" => nil
-    },
-    {
-      "node"=> "30620d669a2a",
-      "files"=> [],
-      "branch"=> "features/awesome-feature",
-      "utctimestamp"=> "2013-08-09 13=>04=>32+00=>00",
-      "timestamp"=> "2013-08-09 15=>04=>32",
-      "raw_node"=> "30620d669a2ad2e918f2a133c9a2505485753071",
-      "message"=> "Add watch trailer functional",
-      "size"=> -1,
-      "author"=> "sparrowpublic",
-      "parents"=> ["8bb0be65fac7"],
-      "raw_author"=> "Vladimir Vorobyov <sparrowpublic@gmail.com>",
-      "revision"=> nil
-    }],
-    "canon_url"=> "https=>//bitbucket.org",
-    "user"=> "sparrowpublic"
-  }
+  JSON.parse(GITHUB_JSON)
 end
+
+GITHUB_JSON = <<-GITHUB_JSON
+  { 
+    "before": "5aef35982fb2d34e9d9d4502f6ede1072793222d",
+    "repository": {
+      "url": "http://github.com/defunkt/github",
+      "name": "github",
+      "owner": {
+        "email": "chris@ozmm.org",
+        "name": "defunkt" 
+      }
+    },
+    "commits": {
+      "41a212ee83ca127e3c8cf465891ab7216a705f59": {
+        "url": "http://github.com/defunkt/github/commit/41a212ee83ca127e3c8cf465891ab7216a705f59",
+        "author": {
+          "email": "chris@ozmm.org",
+          "name": "Chris Wanstrath" 
+        },
+        "message": "okay i give in",
+        "timestamp": "2008-02-15T14:57:17-08:00" 
+      },
+      "de8251ff97ee194a289832576287d6f8ad74e3d0": {
+        "url": "http://github.com/defunkt/github/commit/de8251ff97ee194a289832576287d6f8ad74e3d0",
+        "author": {
+          "email": "chris@ozmm.org",
+          "name": "Chris Wanstrath" 
+        },
+        "message": "update pricing a tad",
+        "timestamp": "2008-02-15T14:36:34-08:00" 
+      }
+    },
+    "after": "de8251ff97ee194a289832576287d6f8ad74e3d0",
+    "ref": "refs/heads/features/awesome-feature" 
+  }
+GITHUB_JSON

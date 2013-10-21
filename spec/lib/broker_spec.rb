@@ -1,6 +1,8 @@
 require_relative '../../lib/broker'
 require_relative '../spec_helper'
 
+class Commands; end
+
 describe Broker do
   context "Broker with payload" do
     it "instantiates a broker and assigns the payload" do
@@ -33,24 +35,18 @@ describe Broker do
   end
 
   context "allow_deploy?" do
+    let(:broker){ Broker.with_payload(payload) } 
+
     it "ignores hotfixes" do
-      broker = Broker.with_payload({'commits' => [{'branch' => 'hotfix/some-bugfix'}]})
+      broker.stub(:branch).and_return('hotfixes/fix-something')
       expect(broker.allow_deploy?).to be_false
     end
 
-    it "allows features" do
-      broker = Broker.with_payload({'commits' => [{'branch' => 'features/some-bugfix'}]})
-      expect(broker.allow_deploy?).to be_true
-    end
-
-    it "allows master" do
-      broker = Broker.with_payload({'commits' => [{'branch' => 'master'}]})
-      expect(broker.allow_deploy?).to be_true
-    end
-
-    it "allows production" do
-      broker = Broker.with_payload({'commits' => [{'branch' => 'production'}]})
-      expect(broker.allow_deploy?).to be_true
+    ['features/some-feature', 'master', 'production'].each do |branch|
+      it "allows #{branch}" do
+        broker.stub(:branch).and_return(branch)
+        expect(broker.allow_deploy?).to be_true
+      end
     end
   end
 
