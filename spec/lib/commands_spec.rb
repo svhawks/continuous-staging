@@ -62,7 +62,7 @@ describe Commands do
     context "clone" do
       it "runs the clone command" do
         Commands.any_instance.stub(:pwd).and_return('some_path')
-        expected_cmd = 'git clone git@bitbucket.org:movielalainc/web.git --branch some-branch --single-branch some_path'
+        expected_cmd = 'git clone git@github.com:movielala/web.git --branch some-branch --single-branch some_path'
         Commands.any_instance.should_receive(:run).with(expected_cmd)
         subject.clone
       end
