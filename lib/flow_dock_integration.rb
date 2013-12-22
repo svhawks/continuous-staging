@@ -5,7 +5,7 @@ class FlowDockIntegration < Integration
   end
 
   def update
-    client.push_to_chat(content: message)
+    client.push_to_chat(content: message(:text))
   end
 end
 
