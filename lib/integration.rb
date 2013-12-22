@@ -9,6 +9,10 @@ class Integration
     send("message_for_#{type}")
   end
 
+  def api_token
+    @api_token ||= Settings.new.api_token
+  end
+
   def from
     'MLLDeployBot'
   end

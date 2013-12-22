@@ -1,6 +1,9 @@
 require 'open4'
 require_relative 'log'
-require_relative 'hip_chat'
+require_relative 'integration'
+require_relative 'hip_chat_integration'
+require_relative 'flow_dock_integration'
+require_relative 'settings'
 
 class Commands
   include Log
@@ -14,7 +17,7 @@ class Commands
     link_db_config
     link_shared_log
     ensure_proper_permissions
-    broadcast_new_deploy_on_hipchat
+    broadcast_new_deploy_on_chat
   end
 
   def update
@@ -26,7 +29,7 @@ class Commands
     link_shared_log
     ensure_proper_permissions
     touch_restart
-    broadcast_update_on_hipchat
+    broadcast_update_on_chat
   end
 
   def ensure_working_directory
@@ -53,12 +56,12 @@ class Commands
     run_with_clean_env %{bundle --path #{shared_bundle_path} --gemfile #{pwd}/Gemfile --without test development}
   end
 
-  def broadcast_new_deploy_on_hipchat
-    HipChatIntegration.update(pwd, :new_deploy)
+  def broadcast_new_deploy_on_chat
+    integration_class.update(pwd, :new_deploy)
   end
 
-  def broadcast_update_on_hipchat
-    HipChatIntegration.update(pwd, :update)
+  def broadcast_update_on_chat
+    integration_class.update(pwd, :update)
   end
 
   def self.fire(options)
@@ -89,6 +92,14 @@ class Commands
   end
 
   private
+
+  def integration
+    @integration ||= Settings.new.chat_integration
+  end
+
+  def integration_class
+    Module.const_get(integration)
+  end
 
   def shared_db_config
     shared_root + 'config/database.yml'
@@ -153,4 +164,6 @@ class Commands
     sub_domain = pwd.split('/').last
     "http://#{sub_domain}.staging.movielala.com"
   end
+
+
 end

@@ -23,7 +23,7 @@ describe Commands do
         subject.should_receive(:link_db_config).ordered
         subject.should_receive(:link_shared_log).ordered
         subject.should_receive(:ensure_proper_permissions).ordered
-        subject.should_receive(:broadcast_new_deploy_on_hipchat).ordered
+        subject.should_receive(:broadcast_new_deploy_on_chat).ordered
         subject.create
       end
     end
@@ -38,7 +38,7 @@ describe Commands do
         subject.should_receive(:link_shared_log).ordered
         subject.should_receive(:ensure_proper_permissions).ordered
         subject.should_receive(:touch_restart).ordered
-        subject.should_receive(:broadcast_update_on_hipchat).ordered
+        subject.should_receive(:broadcast_update_on_chat).ordered
         subject.update
       end
     end
@@ -137,20 +137,21 @@ describe Commands do
 
     context "broadcast helpers" do
       before do
+        Settings.any_instance.stub(:chat_integration).and_return('HipChatIntegration')
         subject.stub(:pwd).and_return('/some/path')
       end
 
-      context "broadcast_new_deploy_on_hipchat" do
-        it "delegates to the hipchat integration" do
+      context "broadcast_new_deploy_on_chat" do
+        it "delegates to the chat integration" do
           HipChatIntegration.should_receive(:update).with('/some/path', :new_deploy)
-          subject.broadcast_new_deploy_on_hipchat
+          subject.broadcast_new_deploy_on_chat
         end
       end
 
-      context "broadcast_update_on_hipchat" do
-        it "delegates to the hipchat integration" do
+      context "broadcast_update_on_chat" do
+        it "delegates to the chat integration" do
           HipChatIntegration.should_receive(:update).with('/some/path', :update)
-          subject.broadcast_update_on_hipchat
+          subject.broadcast_update_on_chat
         end
       end
     end
