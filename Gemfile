@@ -5,6 +5,7 @@ gem 'thin'
 gem 'open4'
 gem 'whenever'
 gem 'hipchat-api'
+gem 'flowdock'
 
 group :test do
   gem 'rspec'
