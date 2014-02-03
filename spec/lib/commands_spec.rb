@@ -22,7 +22,6 @@ describe Commands do
         subject.should_receive(:bundle).ordered
         subject.should_receive(:link_db_config).ordered
         subject.should_receive(:link_shared_log).ordered
-        subject.should_receive(:ensure_proper_permissions).ordered
         subject.should_receive(:broadcast_new_deploy_on_chat).ordered
         subject.create
       end
@@ -36,7 +35,6 @@ describe Commands do
         subject.should_receive(:bundle).ordered
         subject.should_receive(:link_db_config).ordered
         subject.should_receive(:link_shared_log).ordered
-        subject.should_receive(:ensure_proper_permissions).ordered
         subject.should_receive(:touch_restart).ordered
         subject.should_receive(:broadcast_update_on_chat).ordered
         subject.update
@@ -110,14 +108,6 @@ describe Commands do
         Commands.any_instance.stub(:pwd).and_return('some_path')
         subject.should_receive(:run_with_clean_env).once.with('bundle --path /var/www/vhosts/movielala.com/staging/shared/bundle --gemfile some_path/Gemfile --without test development')
         subject.bundle
-      end
-    end
-
-    context "ensure_proper_permissions" do
-      it "runs command to ensure proper permissions" do
-        Commands.any_instance.stub(:pwd).and_return('some_path')
-        subject.should_receive(:run).once.with('chown -R www-data:www-data some_path')
-        subject.ensure_proper_permissions
       end
     end
 

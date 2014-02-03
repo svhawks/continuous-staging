@@ -16,7 +16,6 @@ class Commands
     bundle
     link_db_config
     link_shared_log
-    ensure_proper_permissions
     broadcast_new_deploy_on_chat
   end
 
@@ -27,17 +26,12 @@ class Commands
     bundle
     link_db_config
     link_shared_log
-    ensure_proper_permissions
     touch_restart
     broadcast_update_on_chat
   end
 
   def ensure_working_directory
     FileUtils.mkdir_p pwd
-  end
-
-  def ensure_proper_permissions
-    run %{chown -R www-data:www-data #{pwd}}
   end
 
   def link_db_config
