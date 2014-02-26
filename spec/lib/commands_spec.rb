@@ -84,10 +84,12 @@ describe Commands do
     end
 
     context "link_db_config" do
-      it "symlinks shared db config" do
+      it "symlinks shared db config files" do
         Commands.any_instance.stub(:pwd).and_return('root_path')
-        expected_cmd = 'ln -nfs /var/www/vhosts/movielala.com/staging/shared/config/database.yml root_path/config/database.yml'
-        Commands.any_instance.should_receive(:run).with(expected_cmd)
+        expected_cmd1 = 'ln -nfs /var/www/vhosts/movielala.com/staging/shared/config/database.yml root_path/config/database.yml'
+        expected_cmd2 = 'ln -nfs /var/www/vhosts/movielala.com/staging/shared/config/mongoid.yml root_path/config/mongoid.yml'
+        Commands.any_instance.should_receive(:run).with(expected_cmd1).once()
+        Commands.any_instance.should_receive(:run).with(expected_cmd2).once()
         subject.link_db_config
       end
     end

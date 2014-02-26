@@ -36,6 +36,7 @@ class Commands
 
   def link_db_config
     run %{ln -nfs #{shared_db_config} #{target_db_config}}
+    run %{ln -nfs #{shared_mongodb_config} #{target_mongodb_config}}
   end
 
   def link_shared_log
@@ -99,6 +100,10 @@ class Commands
     shared_root + 'config/database.yml'
   end
 
+  def shared_mongodb_config
+    shared_root + 'config/mongoid.yml'
+  end
+
   def shared_resque_config
     shared_root + 'config/settings/resque.yml'
   end
@@ -121,6 +126,10 @@ class Commands
 
   def target_db_config
     "#{pwd}/config/database.yml"
+  end
+
+  def target_mongodb_config
+    "#{pwd}/config/mongoid.yml"
   end
 
   def shared_log
