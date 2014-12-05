@@ -6,7 +6,7 @@ gem 'open4'
 gem 'whenever'
 gem 'hipchat-api'
 gem 'flowdock'
-gem 'slack-api'
+gem 'httparty'
 
 group :test do
   gem 'rspec'

@@ -43,6 +43,6 @@ class Integration
   private
   def url
     sub_domain = path.split('/').last
-    "http://#{sub_domain}.staging.movielala.com"
+    "http://#{sub_domain}.dev.movielala.com"
   end
 end
