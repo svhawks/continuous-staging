@@ -1,5 +1,7 @@
 # https://hooks.slack.com/services/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
 
+require 'httparty'
+
 class SlackIntegration < Integration
   include HTTParty
   base_uri 'https://hooks.slack.com'
