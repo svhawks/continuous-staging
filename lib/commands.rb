@@ -1,6 +1,8 @@
 require 'open4'
+require 'bundler'
 require_relative 'log'
 require_relative 'integration'
+require_relative 'slack_integration'
 require_relative 'hip_chat_integration'
 require_relative 'flow_dock_integration'
 require_relative 'settings'
