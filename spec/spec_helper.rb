@@ -27,11 +27,12 @@ end
 SETTINGS_YAML = <<-eof
 ---
 applications:
-  - name: Movielala
-    path: /var/www/vhosts/movielala.com/staging/
-    git: git@github.com:movielala/api.git
+  - name: github
+    path: /home/deployer/github
+    git: git@github.com:defunkt/github
     chat_integration: SlackIntegration
     api_token: 182efbfc0aceda25182c8d982a2e1dfd
+    url: http://%{branch}.staging.github.com
 eof
 
 GITHUB_JSON = <<-GITHUB_JSON
