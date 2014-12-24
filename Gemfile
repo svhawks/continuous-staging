@@ -10,5 +10,6 @@ gem 'httparty'
 
 group :test do
   gem 'rspec'
+  gem 'rspec-its'
   gem 'rack-test'
 end
