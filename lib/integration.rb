@@ -1,8 +1,13 @@
+require_relative 'settings'
+require_relative 'app_helper'
+
 class Integration
+
   attr_accessor :path, :type
 
-  def initialize
+  def initialize(application)
     @type = :new_deploy
+    @application = application
   end
 
   def message(format = :html)
@@ -10,7 +15,7 @@ class Integration
   end
 
   def api_token
-    @api_token ||= Settings.new.api_token
+    @api_token ||= current_app.api_token
   end
 
   def from
@@ -43,6 +48,10 @@ class Integration
   private
   def url
     sub_domain = path.split('/').last
-    "http://#{sub_domain}.dev.movielala.com"
+    current_app.url % { branch: sub_domain }
+  end
+
+  def current_app
+    @application
   end
 end
