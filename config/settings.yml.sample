@@ -1,0 +1,14 @@
+---
+applications:
+  - name: AppName
+    path: /some/path
+    git: git@github.com:foo/bar
+    chat_integration: SlackIntegration
+    api_token: chat-token
+    url: http://%{branch}.staging.domain.com
+  - name: AppName2
+    path: /some/other/path
+    git: baz@github.com:foo/bar
+    chat_integration: SlackIntegration
+    api_token: chat-token2
+    url: http://%{branch}.staging2.domain.com

@@ -1,8 +1,0 @@
----
-applications:
-  - name: Movielala
-    path: /var/www/vhosts/movielala.com/staging/
-    git: git@github.com:movielala/api.git
-    chat_integration: SlackIntegration
-    api_token: 182efbfc0aceda25182c8d982a2e1dfd
-    url: http://%{branch}.staging.movielala.com
