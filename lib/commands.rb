@@ -9,7 +9,7 @@ require_relative 'settings'
 
 class Commands
   include Log
-  attr_accessor :pwd, :branch
+  attr_accessor :pwd, :branch, :shared_path
 
   def create
     ensure_working_directory
@@ -65,6 +65,7 @@ class Commands
     command = new
     command.pwd = options[:in]
     command.branch = options[:branch] if options[:branch]
+    command.shared_path = options[:shared_path] if options[:shared_path]
     command.send(options[:run])
     command
   end
@@ -99,31 +100,27 @@ class Commands
   end
 
   def shared_db_config
-    shared_root + 'config/database.yml'
+    File.join(shared_root, 'config/database.yml')
   end
 
   def shared_mongodb_config
-    shared_root + 'config/mongoid.yml'
+    File.join(shared_root, 'config/mongoid.yml')
   end
 
   def shared_resque_config
-    shared_root + 'config/settings/resque.yml'
+    File.join(shared_root, 'config/settings/resque.yml')
   end
 
   def shared_session_store
-    shared_root + 'config/initializers/session_store.rb'
+    File.join(shared_root, 'config/initializers/session_store.rb')
   end
 
   def shared_bundle_path
-    shared_root + 'bundle'
+    File.join(shared_root, 'bundle')
   end
 
   def staging_root
     '/var/www/vhosts/movielala.com/staging/'
-  end
-
-  def shared_root
-    '/var/www/vhosts/movielala.com/staging/shared/'
   end
 
   def target_db_config
@@ -135,11 +132,15 @@ class Commands
   end
 
   def shared_log
-    shared_root + 'log'
+    File.join(shared_root, 'log')
   end
 
   def target_log
     "#{pwd}/log"
+  end
+
+  def shared_root
+    shared_path
   end
 
   def run(command, target = pwd)
@@ -169,6 +170,4 @@ class Commands
     sub_domain = pwd.split('/').last
     "http://#{sub_domain}.staging.movielala.com"
   end
-
-
 end

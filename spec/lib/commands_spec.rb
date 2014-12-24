@@ -77,7 +77,8 @@ describe Commands do
     context "link_shared_log" do
       it "symlinks shared resque config" do
         Commands.any_instance.stub(:pwd).and_return('root_path')
-        expected_cmd = 'ln -nfs /var/www/vhosts/movielala.com/staging/shared/log root_path/log'
+        Commands.any_instance.stub(:shared_path).and_return('shared_path')
+        expected_cmd = 'ln -nfs shared_path/log root_path/log'
         Commands.any_instance.should_receive(:run).with(expected_cmd)
         subject.link_shared_log
       end
@@ -86,8 +87,9 @@ describe Commands do
     context "link_db_config" do
       it "symlinks shared db config files" do
         Commands.any_instance.stub(:pwd).and_return('root_path')
-        expected_cmd1 = 'ln -nfs /var/www/vhosts/movielala.com/staging/shared/config/database.yml root_path/config/database.yml'
-        expected_cmd2 = 'ln -nfs /var/www/vhosts/movielala.com/staging/shared/config/mongoid.yml root_path/config/mongoid.yml'
+        Commands.any_instance.stub(:shared_path).and_return('shared_path')
+        expected_cmd1 = 'ln -nfs shared_path/config/database.yml root_path/config/database.yml'
+        expected_cmd2 = 'ln -nfs shared_path/config/mongoid.yml root_path/config/mongoid.yml'
         Commands.any_instance.should_receive(:run).with(expected_cmd1).once()
         Commands.any_instance.should_receive(:run).with(expected_cmd2).once()
         subject.link_db_config
@@ -108,7 +110,8 @@ describe Commands do
     context "bundle" do
       it "runs command to bundle" do
         Commands.any_instance.stub(:pwd).and_return('some_path')
-        subject.should_receive(:run_with_clean_env).once.with('bundle --path /var/www/vhosts/movielala.com/staging/shared/bundle --gemfile some_path/Gemfile --without test development')
+        Commands.any_instance.stub(:shared_path).and_return('shared_path')
+        subject.should_receive(:run_with_clean_env).once.with('bundle --path shared_path/bundle --gemfile some_path/Gemfile --without test development')
         subject.bundle
       end
     end

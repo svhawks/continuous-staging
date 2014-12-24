@@ -29,6 +29,10 @@ class Broker
     File.join(staging_root, folder)
   end
 
+  def shared_path
+    File.join(staging_root, 'shared')
+  end
+
   def staging_root
     current_app.path
   end
@@ -41,10 +45,10 @@ class Broker
     if allow_deploy?
       if deploy_exists?
         logger.info "Existing deploy: now updating codebase"
-        Commands.fire(run: :update, in: deploy_path)
+        Commands.fire(run: :update, in: deploy_path, shared_path: shared_path)
       else
         logger.info "New deploy: now setting up new app"
-        Commands.fire(run: :create, in: deploy_path, branch: branch)
+        Commands.fire(run: :create, in: deploy_path, branch: branch, shared_path: shared_path)
       end
     else
       logger.info "Branch #{branch} rejected"

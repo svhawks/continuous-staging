@@ -38,8 +38,8 @@ class Integration
     end
   end
 
-  def self.update(path, type = :new_deploy)
-    integration = new
+  def self.update(app, path, type = :new_deploy)
+    integration = new(app)
     integration.path = path
     integration.type = type
     integration.update

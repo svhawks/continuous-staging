@@ -96,7 +96,7 @@ describe Broker do
     context "with existing deploy" do
       it "updates the codebase" do
         Broker.any_instance.stub(:deploy_exists?).and_return(true)
-        Commands.should_receive(:fire).with(run: :update, in: 'some_path')
+        Commands.should_receive(:fire).with(run: :update, in: 'some_path', shared_path: '/home/deployer/github/shared')
       end
     end
 
@@ -106,7 +106,7 @@ describe Broker do
       end
 
       it "creates repo in the branch folder" do
-        Commands.should_receive(:fire).with(run: :create, in: 'some_path', branch: 'features/awesome-feature')
+        Commands.should_receive(:fire).with(run: :create, in: 'some_path', branch: 'features/awesome-feature', shared_path: '/home/deployer/github/shared')
       end
     end
   end
