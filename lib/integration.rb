@@ -2,7 +2,6 @@ require_relative 'settings'
 require_relative 'app_helper'
 
 class Integration
-
   attr_accessor :path, :type
 
   def initialize(application)
@@ -24,17 +23,17 @@ class Integration
 
   def message_for_new_deploy(format = :html)
     if format == :html
-      %{<a href="#{url}">#{url}</a> has been deployed!}
+      %(<a href="#{url}">#{url}</a> has been deployed!)
     else
-      %{#{url} has been deployed!}
+      %(#{url} has been deployed!)
     end
   end
 
   def message_for_update(format = :html)
     if format == :html
-      %{<a href="#{url}">#{url}</a> has been updated!}
+      %(<a href="#{url}">#{url}</a> has been updated!)
     else
-      %{#{url} has been updated!}
+      %(#{url} has been updated!)
     end
   end
 
@@ -46,6 +45,7 @@ class Integration
   end
 
   private
+
   def url
     sub_domain = path.split('/').last
     current_app.url % { branch: sub_domain }

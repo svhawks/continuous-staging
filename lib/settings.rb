@@ -14,7 +14,7 @@ class Settings
   end
 
   def self.find(name)
-    apps.find {|app| app.name == name }
+    apps.find { |app| app.name == name }
   end
 
   def configuration
@@ -33,4 +33,3 @@ class Settings
     File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'settings.yml'))
   end
 end
-

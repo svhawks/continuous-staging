@@ -21,8 +21,8 @@ post '/' do
       Broker.deploy(JSON.parse(payload))
     end
   rescue Exception => e
-    logger.info "===Something Went Wrong==="
+    logger.info '===Something Went Wrong==='
     logger.info e
   end
-  ""
+  ''
 end

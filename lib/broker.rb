@@ -18,11 +18,11 @@ class Broker
   end
 
   def deploy_exists?
-    File.exists? deploy_path
+    File.exist? deploy_path
   end
 
   def allow_deploy?
-    current_app_exists? && branch && (branch.include?('feature') || ['staging', 'master', 'production'].include?(branch))
+    current_app_exists? && branch && (branch.include?('feature') || %w(staging master production).include?(branch))
   end
 
   def deploy_path
@@ -44,10 +44,10 @@ class Broker
   def deploy
     if allow_deploy?
       if deploy_exists?
-        logger.info "Existing deploy: now updating codebase"
+        logger.info 'Existing deploy: now updating codebase'
         Commands.fire(run: :update, in: deploy_path, shared_path: shared_path)
       else
-        logger.info "New deploy: now setting up new app"
+        logger.info 'New deploy: now setting up new app'
         Commands.fire(run: :create, in: deploy_path, branch: branch, shared_path: shared_path)
       end
     else
@@ -55,13 +55,13 @@ class Broker
     end
   end
 
-  def self.with_payload payload
+  def self.with_payload(payload)
     broker = new
     broker.payload = payload
     broker
   end
 
-  def self.deploy payload
+  def self.deploy(payload)
     broker = new
     broker.payload = payload
     broker.deploy

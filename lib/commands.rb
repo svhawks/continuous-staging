@@ -37,20 +37,20 @@ class Commands
   end
 
   def link_db_config
-    run %{ln -nfs #{shared_db_config} #{target_db_config}}
-    run %{ln -nfs #{shared_mongodb_config} #{target_mongodb_config}}
+    run %(ln -nfs #{shared_db_config} #{target_db_config})
+    run %(ln -nfs #{shared_mongodb_config} #{target_mongodb_config})
   end
 
   def link_shared_log
-    run %{ln -nfs #{shared_log} #{target_log}}
+    run %(ln -nfs #{shared_log} #{target_log})
   end
 
   def pull
-    run %{git reset HEAD && git checkout . && git clean -f -d && git pull origin #{branch}}
+    run %(git reset HEAD && git checkout . && git clean -f -d && git pull origin #{branch})
   end
 
   def bundle
-    run_with_clean_env %{bundle --path #{shared_bundle_path} --gemfile #{pwd}/Gemfile --without test development}
+    run_with_clean_env %(bundle --path #{shared_bundle_path} --gemfile #{pwd}/Gemfile --without test development)
   end
 
   def broadcast_new_deploy_on_chat
@@ -71,14 +71,14 @@ class Commands
   end
 
   def clone
-    run %{git clone git@github.com:movielala/web.git --branch #{branch} --single-branch #{pwd}}
+    run %(git clone git@github.com:movielala/web.git --branch #{branch} --single-branch #{pwd})
   end
 
   def update_submodule
-    run %{git submodule init && git submodule update}
+    run %(git submodule init && git submodule update)
   end
 
-  def rm_rf folders
+  def rm_rf(folders)
     if folders && folders.length > 0
       removal_command = "rm -rf #{folders.join(' ')}"
       run(removal_command, staging_root)
@@ -86,7 +86,7 @@ class Commands
   end
 
   def touch_restart
-    run %{touch tmp/restart.txt && curl #{url} > /dev/null}
+    run %(touch tmp/restart.txt && curl #{url} > /dev/null)
   end
 
   private
@@ -146,7 +146,7 @@ class Commands
   def run(command, target = pwd)
     logger.info "Running #{command} in #{target}"
     error, success = nil
-    status = Open4::popen4(command, chdir: target) do |pid, stdin, stdout, stderr|
+    status = Open4.popen4(command, chdir: target) do |_pid, _stdin, stdout, stderr|
       success = stdout.read.strip
       error = stderr.read.strip
       logger.info success
@@ -160,7 +160,7 @@ class Commands
     [status.exitstatus, error, success]
   end
 
-  def run_with_clean_env command
+  def run_with_clean_env(command)
     Bundler.with_clean_env do
       run command
     end
