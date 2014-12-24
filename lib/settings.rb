@@ -1,16 +1,36 @@
 require 'yaml'
+require 'ostruct'
+require_relative 'application'
 
 class Settings
+  attr_reader :applications
+
   def initialize
-    file = File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'settings.yml'))
-    @settings = YAML.load_file(file)
+    load_settings
   end
 
-  def chat_integration
-    @settings['chat_integration']
+  def self.apps
+    @apps ||= new.applications
   end
 
-  def api_token
-    @settings['api_token'][chat_integration]
+  def self.find(name)
+    apps.find {|app| app.name == name }
+  end
+
+  def configuration
+    YAML.load_file(file)
+  end
+
+  private
+
+  def load_settings
+    @applications = configuration['applications'].map do |app|
+      Application.new(app)
+    end
+  end
+
+  def file
+    File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'settings.yml'))
   end
 end
+
