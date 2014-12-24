@@ -2,29 +2,25 @@ require_relative '../../lib/settings'
 require_relative '../spec_helper'
 
 describe Settings do
-  it 'reads from config file' do
-    file = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'config', 'settings.yml'))
-    YAML.should_receive(:load_file).with(file)
-    Settings.new
+  let(:settings) { YAML.load(SETTINGS_YAML) }
+
+  before do
+    allow(YAML).to receive(:load_file).and_return(settings)
   end
 
-  context 'chat_integration' do
-    it 'returns chat_integration from settings' do
-      YAML.stub(:load_file).and_return('chat_integration' => 'foo')
-      expect(Settings.new.chat_integration).to eql('foo')
+  describe 'apps' do
+    subject { Settings.apps.first }
+
+    it 'loads applications' do
+      expect(subject.name).to eql('Movielala')
     end
   end
 
-  context 'integration_api_token' do
-    subject { Settings.new }
+  describe 'find' do
+    subject { Settings.find('Movielala') }
 
-    before do
-      YAML.stub(:load_file).and_return('api_token' => { 'foo' => '123' })
-      subject.stub(:chat_integration).and_return('foo')
-    end
-
-    it 'returns the api token' do
-      expect(subject.api_token).to eql('123')
+    it 'finds app by name' do
+      expect(subject).to be_a(Application)
     end
   end
 end
