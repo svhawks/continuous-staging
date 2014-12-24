@@ -1,12 +1,13 @@
 require 'json'
-require 'active_support/core_ext/string'
+require 'active_support/all'
 require_relative 'log'
+require_relative 'settings'
+require_relative 'app_helper'
 
 class Broker
   include Log
-  attr_accessor :payload 
-
-  STAGING_ROOT = '/var/www/vhosts/movielala.com/staging/'
+  include AppHelper
+  attr_accessor :payload
 
   def branch
     payload['ref'].gsub('refs/heads/', '').to_s
@@ -21,11 +22,19 @@ class Broker
   end
 
   def allow_deploy?
-    branch && (branch.include?('feature') || ['staging', 'master', 'production'].include?(branch))
+    current_app_exists? && branch && (branch.include?('feature') || ['staging', 'master', 'production'].include?(branch))
   end
 
   def deploy_path
-    STAGING_ROOT + folder
+    File.join(staging_root, folder)
+  end
+
+  def staging_root
+    current_app.path
+  end
+
+  def name
+    payload['repository']['name']
   end
 
   def deploy

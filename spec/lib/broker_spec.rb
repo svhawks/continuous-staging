@@ -4,6 +4,13 @@ require_relative '../spec_helper'
 class Commands; end
 
 describe Broker do
+  let(:settings) { YAML.load(SETTINGS_YAML) }
+
+  before do
+    Settings.any_instance.stub(:configuration)
+      .and_return(settings)
+  end
+
   context "Broker with payload" do
     it "instantiates a broker and assigns the payload" do
       broker = Broker.with_payload({})
@@ -16,8 +23,14 @@ describe Broker do
     subject{ Broker.with_payload(payload)}
     its(:branch){ should == 'features/awesome-feature' }
     its(:folder){ should == 'awesome-feature' }
-    its(:deploy_exists?){ should be_false }
-    its(:deploy_path){ should == '/var/www/vhosts/movielala.com/staging/awesome-feature' }
+    its(:deploy_exists?){ should be false }
+    its(:name){ should == 'github' }
+    its(:staging_root){ should == '/home/deployer/github' }
+    its(:deploy_path){ should == '/home/deployer/github/awesome-feature' }
+
+    it 'gets current app' do
+      expect(subject.current_app.name).to eql('github')
+    end
   end
 
   context "subdomain string manipulation" do
@@ -37,15 +50,20 @@ describe Broker do
   context "allow_deploy?" do
     let(:broker){ Broker.with_payload(payload) } 
 
+    it 'ignores non existing apps' do
+      broker.stub(:current_app).and_return(nil)
+      expect(broker.allow_deploy?).to be false
+    end
+
     it "ignores hotfixes" do
       broker.stub(:branch).and_return('hotfixes/fix-something')
-      expect(broker.allow_deploy?).to be_false
+      expect(broker.allow_deploy?).to be false
     end
 
     ['features/some-feature', 'master', 'production'].each do |branch|
       it "allows #{branch}" do
         broker.stub(:branch).and_return(branch)
-        expect(broker.allow_deploy?).to be_true
+        expect(broker.allow_deploy?).to be true
       end
     end
   end
