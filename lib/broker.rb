@@ -3,15 +3,13 @@ require 'active_support/all'
 require_relative 'log'
 require_relative 'settings'
 require_relative 'app_helper'
+require_relative 'providers/github'
+require_relative 'providers/bitbucket'
 
 class Broker
   include Log
   include AppHelper
   attr_accessor :payload
-
-  def branch
-    payload['ref'].gsub('refs/heads/', '').to_s
-  end
 
   def folder
     branch.to_s.split('/').last.to_s.parameterize.dasherize
@@ -41,6 +39,10 @@ class Broker
     payload['repository']['name']
   end
 
+  def branch
+    git_provider.branch
+  end
+
   def deploy
     if allow_deploy?
       if deploy_exists?
@@ -65,5 +67,15 @@ class Broker
     broker = new
     broker.payload = payload
     broker.deploy
+  end
+
+  private
+
+  def git_provider
+    git_provider_class.new(payload)
+  end
+
+  def git_provider_class
+    "Providers::#{current_app.git_provider.classify}".constantize
   end
 end

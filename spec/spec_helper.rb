@@ -33,6 +33,7 @@ applications:
     chat_integration: SlackIntegration
     api_token: 182efbfc0aceda25182c8d982a2e1dfd
     url: http://%{branch}.staging.github.com
+    git_provider: github
 eof
 
 GITHUB_JSON = <<-GITHUB_JSON
@@ -70,3 +71,43 @@ GITHUB_JSON = <<-GITHUB_JSON
     "ref": "refs/heads/features/awesome-feature"
   }
 GITHUB_JSON
+
+BITBUCKET_JSON = <<-eof
+{
+  "canon_url": "https://bitbucket.org",
+  "commits": [
+    {
+      "author": "marcus",
+      "branch": "master",
+      "files": [
+        {
+          "file": "somefile.py",
+          "type": "modified"
+        }
+      ],
+      "message": "Added some more things to somefile.py",
+      "node": "620ade18607a",
+      "parents": [
+        "702c70160afc"
+      ],
+      "raw_author": "Marcus Bertrand <marcus@somedomain.com>",
+      "raw_node": "620ade18607ac42d872b568bb92acaa9a28620e9",
+      "revision": null,
+      "size": -1,
+      "timestamp": "2012-05-30 05:58:56",
+      "utctimestamp": "2012-05-30 03:58:56+00:00"
+    }
+  ],
+  "repository": {
+    "absolute_url": "/marcus/project-x/",
+    "fork": false,
+    "is_private": true,
+    "name": "Project X",
+    "owner": "marcus",
+    "scm": "git",
+    "slug": "project-x",
+    "website": "https://atlassian.com/"
+  },
+  "user": "marcus"
+}
+eof
