@@ -132,20 +132,20 @@ describe Commands do
 
     context 'broadcast helpers' do
       before do
-        Settings.any_instance.stub(:chat_integration).and_return('HipChatIntegration')
+        Settings.any_instance.stub(:chat_integration).and_return('SlackIntegration')
         subject.stub(:pwd).and_return('/some/path')
       end
 
       context 'broadcast_new_deploy_on_chat' do
         it 'delegates to the chat integration' do
-          HipChatIntegration.should_receive(:update).with('/some/path', :new_deploy)
+          SlackIntegration.should_receive(:update).with('/some/path', :new_deploy)
           subject.broadcast_new_deploy_on_chat
         end
       end
 
       context 'broadcast_update_on_chat' do
         it 'delegates to the chat integration' do
-          HipChatIntegration.should_receive(:update).with('/some/path', :update)
+          SlackIntegration.should_receive(:update).with('/some/path', :update)
           subject.broadcast_update_on_chat
         end
       end
