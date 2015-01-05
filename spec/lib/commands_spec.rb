@@ -2,14 +2,7 @@ require_relative '../../lib/commands'
 require_relative '../spec_helper'
 
 describe Commands do
-  context 'fire' do
-    it 'runs the command with options' do
-      Commands.any_instance.should_receive(:some_command)
-      commands =  Commands.fire(run: :some_command, in: 'some_path')
-      expect(commands).to be_a(Commands)
-      expect(commands.pwd).to eql('some_path')
-    end
-  end
+  let(:app1) { Application.new(git: 'foo', path: 'bar') }
 
   context 'create update commands' do
     subject { Commands.new }
@@ -60,7 +53,8 @@ describe Commands do
     context 'clone' do
       it 'runs the clone command' do
         Commands.any_instance.stub(:pwd).and_return('some_path')
-        expected_cmd = 'git clone git@github.com:movielala/web.git --branch some-branch --single-branch some_path'
+        Commands.any_instance.stub(:repository_url).and_return('git@github.com:foo/bar.git')
+        expected_cmd = 'git clone git@github.com:foo/bar.git --branch some-branch --single-branch some_path'
         Commands.any_instance.should_receive(:run).with(expected_cmd)
         subject.clone
       end
@@ -132,20 +126,21 @@ describe Commands do
 
     context 'broadcast helpers' do
       before do
-        Settings.any_instance.stub(:chat_integration).and_return('SlackIntegration')
+        Commands.any_instance.stub(:app).and_return(app1)
+        Application.any_instance.stub(:chat_integration).and_return('SlackIntegration')
         subject.stub(:pwd).and_return('/some/path')
       end
 
       context 'broadcast_new_deploy_on_chat' do
         it 'delegates to the chat integration' do
-          SlackIntegration.should_receive(:update).with('/some/path', :new_deploy)
+          SlackIntegration.should_receive(:update).with(app1, '/some/path', :new_deploy)
           subject.broadcast_new_deploy_on_chat
         end
       end
 
       context 'broadcast_update_on_chat' do
         it 'delegates to the chat integration' do
-          SlackIntegration.should_receive(:update).with('/some/path', :update)
+          SlackIntegration.should_receive(:update).with(app1, '/some/path', :update)
           subject.broadcast_update_on_chat
         end
       end

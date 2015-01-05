@@ -7,7 +7,7 @@ require_relative 'settings'
 
 class Commands
   include Log
-  attr_accessor :pwd, :branch, :shared_path
+  attr_accessor :pwd, :branch, :shared_path, :app
 
   def create
     ensure_working_directory
@@ -52,28 +52,35 @@ class Commands
   end
 
   def broadcast_new_deploy_on_chat
-    integration_class.update(pwd, :new_deploy)
+    integration_class.update(app, pwd, :new_deploy)
   end
 
   def broadcast_update_on_chat
-    integration_class.update(pwd, :update)
+    integration_class.update(app, pwd, :update)
   end
 
   def self.fire(options)
-    command = new
-    command.pwd = options[:in]
-    command.branch = options[:branch] if options[:branch]
-    command.shared_path = options[:shared_path] if options[:shared_path]
-    command.send(options[:run])
-    command
+    fork do
+      command = new
+      command.pwd = options[:in]
+      command.branch = options[:branch]
+      command.app = options[:app]
+      command.shared_path = options[:shared_path]
+      command.send(options[:run])
+      command
+    end
   end
 
   def clone
-    run %(git clone git@github.com:movielala/web.git --branch #{branch} --single-branch #{pwd})
+    run %(git clone #{repository_url} --branch #{branch} --single-branch #{pwd})
   end
 
   def update_submodule
     run %(git submodule init && git submodule update)
+  end
+
+  def repository_url
+    app.git
   end
 
   def rm_rf(folders)
@@ -89,12 +96,8 @@ class Commands
 
   private
 
-  def integration
-    @integration ||= Settings.new.chat_integration
-  end
-
   def integration_class
-    Module.const_get(integration)
+    Module.const_get(app.chat_integration)
   end
 
   def shared_db_config
