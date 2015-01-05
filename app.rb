@@ -15,7 +15,7 @@ end
 
 post '/' do
   begin
-    payload = params[:payload]
+    payload = params[:payload] || request.body.read
     if payload
       logger.info payload
       Broker.deploy(JSON.parse(payload))
