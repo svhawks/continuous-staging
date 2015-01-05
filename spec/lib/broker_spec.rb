@@ -5,6 +5,7 @@ class Commands; end
 
 describe Broker do
   let(:settings) { YAML.load(SETTINGS_YAML) }
+  let(:app1) { Application.new(git: 'foo', path: 'bar', git_provider: 'github') }
 
   before do
     Settings.any_instance.stub(:configuration)
@@ -51,7 +52,7 @@ describe Broker do
     let(:broker) { Broker.with_payload(payload) }
 
     it 'ignores non existing apps' do
-      broker.stub(:current_app).and_return(nil)
+      broker.stub(:current_app).and_return(NullApplication.new)
       expect(broker.allow_deploy?).to be false
     end
 
@@ -72,6 +73,7 @@ describe Broker do
     let(:broker) { Broker.with_payload(payload) }
 
     before do
+      Broker.any_instance.stub(:current_app).and_return(app1)
       Broker.any_instance.stub(:deploy_path).and_return('some_path')
     end
 
@@ -96,7 +98,7 @@ describe Broker do
     context 'with existing deploy' do
       it 'updates the codebase' do
         Broker.any_instance.stub(:deploy_exists?).and_return(true)
-        Commands.should_receive(:fire).with(run: :update, in: 'some_path', shared_path: '/home/deployer/github/shared')
+        Commands.should_receive(:fire).with(run: :update, in: 'some_path', shared_path: 'bar/shared', app: app1)
       end
     end
 
@@ -106,7 +108,7 @@ describe Broker do
       end
 
       it 'creates repo in the branch folder' do
-        Commands.should_receive(:fire).with(run: :create, in: 'some_path', branch: 'features/awesome-feature', shared_path: '/home/deployer/github/shared')
+        Commands.should_receive(:fire).with(run: :create, in: 'some_path', branch: 'features/awesome-feature', shared_path: 'bar/shared', app: app1)
       end
     end
   end
