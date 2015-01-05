@@ -9,17 +9,24 @@ describe Cleaner do
   context 'deploys' do
     subject { Cleaner.new.deploys }
 
+    let(:app1) { Application.new(path: '/app1') }
+    let(:app2) { Application.new(path: '/app2') }
+
     before do
-      Dir.stub(:[]).and_return(['/some/place/deploy_1', '/some/place/runner', '/some/place/shared'])
+      Settings.stub(:apps).and_return([app1, app2])
+      Dir.stub(:[]).with('/app1/*').and_return(['/app1/master', '/app1/staging', '/app1/shared'])
+      Dir.stub(:[]).with('/app2/*').and_return(['/app2/master', '/app2/staging', '/app2/shared'])
     end
 
     it 'has a list of all deploys' do
       expect(subject).to be_an(Array)
-      expect(subject).to include('/some/place/deploy_1')
+      expect(subject).to include('/app1/master')
+      expect(subject).to include('/app2/master')
     end
 
     it 'does not include shared' do
-      expect(subject).to_not include('/some/place/shared')
+      expect(subject).to_not include('/app1/shared')
+      expect(subject).to_not include('/app2/shared')
     end
 
     it 'does not include runner' do
@@ -31,6 +38,7 @@ describe Cleaner do
     subject { Cleaner.new }
 
     before do
+          Commands.any_instance.stub(:link_db_config)
       Cleaner.any_instance.stub(:deploys).and_return(['/some/path'])
     end
 
@@ -55,6 +63,10 @@ describe Cleaner do
       end
 
       context 'restarting the app' do
+        before do
+          Commands.any_instance.stub(:link_db_config)
+        end
+
         context 'with new codes' do
           it 'restarts the app' do
             Commands.any_instance.stub(:pull).and_return([0, nil, nil])
@@ -72,11 +84,6 @@ describe Cleaner do
         end
       end
 
-      it 'ensures proper permissions' do
-        Commands.any_instance.should_receive(:ensure_proper_permissions)
-        subject.run
-      end
-
       it 're links the shared db' do
         Commands.any_instance.should_receive(:link_db_config)
         subject.run
@@ -84,6 +91,7 @@ describe Cleaner do
     end
 
     it 'runs command to delete deploys' do
+      Commands.any_instance.stub(:link_db_config)
       Cleaner.any_instance.stub(:deploys_to_remove).and_return(['/some/path', '/some/other/path'])
       Commands.any_instance.should_receive(:rm_rf).with(['/some/path', '/some/other/path'])
       subject.run
