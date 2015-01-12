@@ -7,6 +7,7 @@ gem 'whenever'
 gem 'hipchat-api'
 gem 'flowdock'
 gem 'httparty'
+gem 'activesupport'
 
 group :test do
   gem 'rspec'
