@@ -78,6 +78,27 @@ BITBUCKET_JSON = <<-eof
   "commits": [
     {
       "author": "marcus",
+      "branch": null,
+      "files": [
+        {
+          "file": "somefile.py",
+          "type": "modified"
+        }
+      ],
+      "message": "Added some more things to somefile.py",
+      "node": "620ade18607a",
+      "parents": [
+        "702c70160afc"
+      ],
+      "raw_author": "Marcus Bertrand <marcus@somedomain.com>",
+      "raw_node": "620ade18607ac42d872b568bb92acaa9a28620e9",
+      "revision": null,
+      "size": -1,
+      "timestamp": "2012-05-30 05:58:56",
+      "utctimestamp": "2012-05-30 03:58:56+00:00"
+    },
+    {
+      "author": "marcus",
       "branch": "master",
       "files": [
         {
