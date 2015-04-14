@@ -11,8 +11,7 @@ module Providers
     end
 
     def branch
-      p payload
-      payload['commits'].first['branch'].to_s.gsub('refs/heads/', '').to_s
+      payload['commits'].last['branch'].to_s.gsub('refs/heads/', '').to_s
     end
   end
 end
