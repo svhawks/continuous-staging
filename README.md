@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/movielala/continuous-staging.png?label=ready&title=Ready)](https://waffle.io/movielala/continuous-staging)
 Introduction
 ============
 
