@@ -1,0 +1,6 @@
+log: log/thin.log
+socket: /tmp/runner.socket
+environment: development
+pid: tmp/pids/thin.pid
+servers: 1
+daemonize: true
