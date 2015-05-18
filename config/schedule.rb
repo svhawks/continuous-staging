@@ -22,5 +22,6 @@
 set :output, File.expand_path(File.join(File.dirname(__FILE__), '..', 'log', 'cron.log'))
 
 every 5.minutes do
-  command File.expand_path(File.join(File.dirname(__FILE__), '..', 'bin', 'clean'))
+  root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+  command "cd #{root} && ./bin/clean"
 end
