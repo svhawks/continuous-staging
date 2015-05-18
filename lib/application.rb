@@ -1,3 +1,5 @@
+require_relative 'log'
+
 class Application < OpenStruct
 end
 
