@@ -67,7 +67,7 @@ class Commands
       command.app = options[:app]
       command.shared_path = options[:shared_path]
       command.send(options[:run])
-      command
+      exit!
     end
   end
 
