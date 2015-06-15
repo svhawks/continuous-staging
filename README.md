@@ -19,3 +19,9 @@ https://github.com/github/repo/settings/hooks
 The 
 http://runner.staging.xxx.com 
 
+Maintance:
+
+If it is not running
+try to run
+sudo monit start runner-thin
+
