@@ -1,4 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/movielala/continuous-staging.png?label=ready&title=Ready)](https://waffle.io/movielala/continuous-staging)
+
 Introduction
 ============
 
@@ -25,3 +26,6 @@ If it is not running
 try to run
 sudo monit start runner-thin
 
+## Settings
+
+The settings is stored in `config/settings.yml` file. The name of the app should match the name of the project in the github repository. A sample file is included
